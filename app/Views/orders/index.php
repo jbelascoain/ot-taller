@@ -35,11 +35,11 @@
                 <?php foreach ($orders as $order): ?>
                     <?php $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?? '']))); ?>
                     <tr>
-                        <td><a href="<?= base_url('orders/' . $order['id']) ?>"><strong><?= esc(uid('OT', $order['id'])) ?></strong></a></td>
-                        <td><?= esc($order['customer_name'] ?? '—') ?></td>
-                        <td><?= esc($bike ?: '—') ?><?= $order['plate'] ? ' · ' . esc($order['plate']) : '' ?></td>
-                        <td><?= esc(fecha($order['entry_date'])) ?></td>
-                        <td><span class="badge <?= esc(estado_class($order['status'])) ?>"><?= esc(estado_label($order['status'])) ?></span></td>
+                        <td data-label="OT"><a href="<?= base_url('orders/' . $order['id']) ?>"><strong><?= esc(uid('OT', $order['id'])) ?></strong></a></td>
+                        <td data-label="Cliente"><?= esc($order['customer_name'] ?? '—') ?></td>
+                        <td data-label="Moto"><?= esc($bike ?: '—') ?><?= $order['plate'] ? ' · ' . esc($order['plate']) : '' ?></td>
+                        <td data-label="Ingreso"><?= esc(fecha($order['entry_date'])) ?></td>
+                        <td data-label="Estado"><span class="badge <?= esc(estado_class($order['status'])) ?>"><?= esc(estado_label($order['status'])) ?></span></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

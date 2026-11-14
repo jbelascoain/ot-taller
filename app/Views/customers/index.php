@@ -19,10 +19,10 @@
                 <?php endif; ?>
                 <?php foreach ($customers as $customer): ?>
                     <tr>
-                        <td><a href="<?= base_url('customers/' . $customer['id']) ?>"><strong><?= esc($customer['name']) ?></strong></a></td>
-                        <td><?= esc($customer['phone'] ?: '—') ?></td>
-                        <td><?= esc($customer['email'] ?: '—') ?></td>
-                        <td class="right"><a class="btn btn-sm" href="<?= base_url('customers/' . $customer['id'] . '/edit') ?>">Editar</a></td>
+                        <td data-label="Cliente"><a href="<?= base_url('customers/' . $customer['id']) ?>"><strong><?= esc($customer['name']) ?></strong></a></td>
+                        <td data-label="Teléfono"><?= esc($customer['phone'] ?: '—') ?></td>
+                        <td class="cell-block" data-label="Email"><?= esc($customer['email'] ?: '—') ?></td>
+                        <td class="right cell-actions" data-label="Acciones"><a class="btn btn-sm" href="<?= base_url('customers/' . $customer['id'] . '/edit') ?>">Editar</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

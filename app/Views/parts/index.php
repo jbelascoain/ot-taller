@@ -20,14 +20,14 @@
                 <?php foreach ($parts as $part): ?>
                     <?php $low = (int) $part['stock'] <= (int) $part['min_stock']; ?>
                     <tr>
-                        <td><?= esc(uid('REP', $part['id'])) ?></td>
-                        <td><strong><?= esc($part['description']) ?></strong><div class="muted text-xs"><?= esc($part['supplier_name'] ?: 'Sin proveedor') ?></div></td>
-                        <td><?= esc(trim(($part['brand'] ?? '') . ' ' . ($part['sku'] ?? '')) ?: '—') ?></td>
-                        <td class="num"><?= esc(money($part['purchase_price'])) ?></td>
-                        <td class="num"><?= esc(money($part['sale_price'])) ?></td>
-                        <td><span class="badge <?= $low ? 'rechazado' : 'aprobado' ?>"><?= (int) $part['stock'] ?></span></td>
-                        <td><?= (int) $part['active'] === 1 ? '<span class="badge aprobado">Activo</span>' : '<span class="badge inactive">Inactivo</span>' ?></td>
-                        <td class="right">
+                        <td data-label="UID"><?= esc(uid('REP', $part['id'])) ?></td>
+                        <td data-label="Descripción"><strong><?= esc($part['description']) ?></strong><div class="muted text-xs"><?= esc($part['supplier_name'] ?: 'Sin proveedor') ?></div></td>
+                        <td data-label="Marca / SKU"><?= esc(trim(($part['brand'] ?? '') . ' ' . ($part['sku'] ?? '')) ?: '—') ?></td>
+                        <td class="num" data-label="Compra"><?= esc(money($part['purchase_price'])) ?></td>
+                        <td class="num" data-label="Venta"><?= esc(money($part['sale_price'])) ?></td>
+                        <td data-label="Stock"><span class="badge <?= $low ? 'rechazado' : 'aprobado' ?>"><?= (int) $part['stock'] ?></span></td>
+                        <td data-label="Estado"><?= (int) $part['active'] === 1 ? '<span class="badge aprobado">Activo</span>' : '<span class="badge inactive">Inactivo</span>' ?></td>
+                        <td class="right cell-actions" data-label="Acciones">
                             <div class="flex gap wrap" style="justify-content:flex-end">
                                 <a class="btn btn-sm" href="<?= base_url('parts/' . $part['id'] . '/edit') ?>">Editar</a>
                                 <form method="post" action="<?= base_url('parts/' . $part['id'] . '/toggle') ?>" class="inline-form">

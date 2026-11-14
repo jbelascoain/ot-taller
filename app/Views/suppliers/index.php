@@ -19,11 +19,11 @@
                 <?php endif; ?>
                 <?php foreach ($suppliers as $supplier): ?>
                     <tr>
-                        <td><a href="<?= base_url('suppliers/' . $supplier['id']) ?>"><strong><?= esc($supplier['name']) ?></strong></a></td>
-                        <td><?= esc($supplier['contact'] ?: '—') ?></td>
-                        <td><?= esc($supplier['phone'] ?: '—') ?></td>
-                        <td><?= esc($supplier['email'] ?: '—') ?></td>
-                        <td class="right"><a class="btn btn-sm" href="<?= base_url('suppliers/' . $supplier['id'] . '/edit') ?>">Editar</a></td>
+                        <td data-label="Proveedor"><a href="<?= base_url('suppliers/' . $supplier['id']) ?>"><strong><?= esc($supplier['name']) ?></strong></a></td>
+                        <td data-label="Contacto"><?= esc($supplier['contact'] ?: '—') ?></td>
+                        <td data-label="Teléfono"><?= esc($supplier['phone'] ?: '—') ?></td>
+                        <td class="cell-block" data-label="Email"><?= esc($supplier['email'] ?: '—') ?></td>
+                        <td class="right cell-actions" data-label="Acciones"><a class="btn btn-sm" href="<?= base_url('suppliers/' . $supplier['id'] . '/edit') ?>">Editar</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

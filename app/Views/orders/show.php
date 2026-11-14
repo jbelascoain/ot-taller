@@ -130,14 +130,14 @@
                         <?php foreach ($items as $item): ?>
                             <?php $subtotal = (float) $item['unit_price'] * (int) $item['quantity']; ?>
                             <tr>
-                                <td><?= esc($item['description']) ?></td>
-                                <td class="num"><?= (int) $item['quantity'] ?></td>
-                                <td class="num"><?= esc(money($item['unit_price'])) ?></td>
-                                <td class="num"><?= esc(money($subtotal)) ?></td>
-                                <td>
+                                <td data-label="Descripción"><?= esc($item['description']) ?></td>
+                                <td class="num" data-label="Cantidad"><?= (int) $item['quantity'] ?></td>
+                                <td class="num" data-label="P. unitario"><?= esc(money($item['unit_price'])) ?></td>
+                                <td class="num" data-label="Subtotal"><?= esc(money($subtotal)) ?></td>
+                                <td data-label="Estado">
                                     <span class="badge <?= esc(item_estado_class($item['status'])) ?>"><?= esc(item_estado_label($item['status'])) ?></span>
                                 </td>
-                                <td>
+                                <td class="cell-actions" data-label="Acciones">
                                     <div class="flex gap wrap">
                                         <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/status') ?>" class="flex gap">
                                             <?= csrf_field() ?>

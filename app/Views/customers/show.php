@@ -41,10 +41,10 @@
                 <?php if (count($orders) === 0): ?><tr><td colspan="4" class="empty">Sin órdenes.</td></tr><?php endif; ?>
                 <?php foreach ($orders as $order): ?>
                     <tr>
-                        <td><a href="<?= base_url('orders/' . $order['id']) ?>"><strong><?= esc(uid('OT', $order['id'])) ?></strong></a></td>
-                        <td><?= esc(trim(($order['brand'] ?? '') . ' ' . ($order['model'] ?? ''))) ?></td>
-                        <td><?= esc(fecha($order['entry_date'])) ?></td>
-                        <td><span class="badge <?= esc(estado_class($order['status'])) ?>"><?= esc(estado_label($order['status'])) ?></span></td>
+                        <td data-label="OT"><a href="<?= base_url('orders/' . $order['id']) ?>"><strong><?= esc(uid('OT', $order['id'])) ?></strong></a></td>
+                        <td data-label="Moto"><?= esc(trim(($order['brand'] ?? '') . ' ' . ($order['model'] ?? ''))) ?></td>
+                        <td data-label="Ingreso"><?= esc(fecha($order['entry_date'])) ?></td>
+                        <td data-label="Estado"><span class="badge <?= esc(estado_class($order['status'])) ?>"><?= esc(estado_label($order['status'])) ?></span></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

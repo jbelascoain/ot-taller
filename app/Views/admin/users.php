@@ -17,24 +17,24 @@
                 <?php foreach ($users as $user): ?>
                     <?php $isSelf = (int) $me['id'] === (int) $user['id']; ?>
                     <tr>
-                        <td>
+                        <td data-label="Nombre">
                             <strong><?= esc($user['name']) ?></strong>
                             <?php if ($isSelf): ?><span class="badge ingreso">Vos</span><?php endif; ?>
                             <?php if ((int) $user['must_change_password'] === 1): ?>
                                 <div class="muted text-xs">Debe cambiar contraseña</div>
                             <?php endif; ?>
                         </td>
-                        <td><?= esc($user['email']) ?></td>
-                        <td><?= esc($user['role']) ?></td>
-                        <td><?= (int) $user['active'] === 1 ? '<span class="badge aprobado">Activo</span>' : '<span class="badge inactive">Inactivo</span>' ?></td>
-                        <td>
+                        <td class="cell-block" data-label="Email"><?= esc($user['email']) ?></td>
+                        <td data-label="Rol"><?= esc($user['role']) ?></td>
+                        <td data-label="Estado"><?= (int) $user['active'] === 1 ? '<span class="badge aprobado">Activo</span>' : '<span class="badge inactive">Inactivo</span>' ?></td>
+                        <td class="cell-form" data-label="Contraseña">
                             <form method="post" action="<?= base_url('admin/users/' . $user['id'] . '/password') ?>" class="flex gap">
                                 <?= csrf_field() ?>
                                 <input type="password" name="password" placeholder="Nueva contraseña" minlength="8" style="max-width:180px">
                                 <button class="btn btn-sm" type="submit">Cambiar</button>
                             </form>
                         </td>
-                        <td class="right">
+                        <td class="right cell-actions" data-label="Acciones">
                             <div class="flex gap wrap" style="justify-content:flex-end">
                                 <form method="post" action="<?= base_url('admin/users/' . $user['id'] . '/toggle') ?>" class="inline-form">
                                     <?= csrf_field() ?>

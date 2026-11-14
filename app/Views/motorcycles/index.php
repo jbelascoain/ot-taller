@@ -21,11 +21,11 @@
                 <?php endif; ?>
                 <?php foreach ($motos as $moto): ?>
                     <tr>
-                        <td><a href="<?= base_url('motorcycles/' . $moto['id']) ?>"><strong><?= esc(uid('MOT', $moto['id'])) ?></strong></a></td>
-                        <td><?= esc(trim($moto['brand'] . ' ' . $moto['model'])) ?></td>
-                        <td><?= esc($moto['plate'] ?: '—') ?></td>
-                        <td><?= esc($moto['customer_name'] ?? '—') ?></td>
-                        <td class="right"><a class="btn btn-sm" href="<?= base_url('motorcycles/' . $moto['id'] . '/edit') ?>">Editar</a></td>
+                        <td data-label="UID"><a href="<?= base_url('motorcycles/' . $moto['id']) ?>"><strong><?= esc(uid('MOT', $moto['id'])) ?></strong></a></td>
+                        <td data-label="Moto"><?= esc(trim($moto['brand'] . ' ' . $moto['model'])) ?></td>
+                        <td data-label="Patente"><?= esc($moto['plate'] ?: '—') ?></td>
+                        <td data-label="Cliente"><?= esc($moto['customer_name'] ?? '—') ?></td>
+                        <td class="right cell-actions" data-label="Acciones"><a class="btn btn-sm" href="<?= base_url('motorcycles/' . $moto['id'] . '/edit') ?>">Editar</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

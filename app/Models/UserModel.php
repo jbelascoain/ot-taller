@@ -11,7 +11,7 @@ class UserModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useTimestamps    = true;
-    protected $allowedFields    = ['name', 'email', 'password_hash', 'role', 'active'];
+    protected $allowedFields    = ['name', 'email', 'password_hash', 'role', 'active', 'must_change_password'];
 
     public function findByEmail(string $email): ?array
     {
@@ -21,5 +21,10 @@ class UserModel extends Model
     public function active(): array
     {
         return $this->orderBy('name', 'ASC')->findAll();
+    }
+
+    public function countActiveAdmins(): int
+    {
+        return $this->where('role', 'ADMIN')->where('active', 1)->countAllResults();
     }
 }

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'STAFF',
     active TINYINT(1) NOT NULL DEFAULT 1,
+    must_change_password TINYINT(1) NOT NULL DEFAULT 0,
     created_at DATETIME NULL,
     updated_at DATETIME NULL,
     PRIMARY KEY (id),
@@ -134,6 +135,13 @@ INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
     ('pdf_footer', 'Gracias por confiar en {workshop}'),
     ('whatsapp_template', 'Hola {cliente}, te envío el presupuesto de la orden {orden} ({moto}). Total: {total}.'),
     ('logo_path', ''),
-    ('demo_seeded', '0');
+    ('demo_seeded', '0'),
+    ('smtp_host', ''),
+    ('smtp_port', '587'),
+    ('smtp_crypto', 'tls'),
+    ('smtp_user', ''),
+    ('smtp_pass', ''),
+    ('smtp_from_email', ''),
+    ('smtp_from_name', '');
 
 SET FOREIGN_KEY_CHECKS = 1;

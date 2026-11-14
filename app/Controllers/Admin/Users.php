@@ -41,6 +41,7 @@ class Users extends BaseController
             'password_hash' => password_hash((string) $this->request->getPost('password'), PASSWORD_DEFAULT),
             'role'          => (string) $this->request->getPost('role'),
             'active'        => 1,
+            'must_change_password' => 1,
         ]);
 
         return redirect()->to('/admin/users')->with('success', 'Usuario creado.');
@@ -64,6 +65,30 @@ class Users extends BaseController
         return redirect()->to('/admin/users')->with('success', 'Usuario actualizado.');
     }
 
+    public function delete(int $id)
+    {
+        $me = current_user();
+
+        if ($me && (int) $me['id'] === $id) {
+            return redirect()->to('/admin/users')->with('error', 'No podés eliminar tu propio usuario.');
+        }
+
+        $users = new UserModel();
+        $user  = $users->find($id);
+
+        if (! $user) {
+            return redirect()->to('/admin/users')->with('error', 'Usuario no encontrado.');
+        }
+
+        if ($user['role'] === 'ADMIN' && (int) $user['active'] === 1 && $users->countActiveAdmins() <= 1) {
+            return redirect()->to('/admin/users')->with('error', 'No podés eliminar al último administrador activo.');
+        }
+
+        $users->delete($id);
+
+        return redirect()->to('/admin/users')->with('success', 'Usuario eliminado.');
+    }
+
     public function password(int $id)
     {
         $password = (string) $this->request->getPost('password');
@@ -72,10 +97,18 @@ class Users extends BaseController
             return redirect()->to('/admin/users')->with('error', 'La contraseña debe tener al menos 8 caracteres.');
         }
 
+        $me = current_user();
+        $mustChange = ($me && (int) $me['id'] === $id) ? 0 : 1;
+
         (new UserModel())->update($id, [
-            'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+            'password_hash'        => password_hash($password, PASSWORD_DEFAULT),
+            'must_change_password' => $mustChange,
         ]);
 
-        return redirect()->to('/admin/users')->with('success', 'Contraseña actualizada.');
+        $message = $mustChange
+            ? 'Contraseña actualizada. El usuario deberá cambiarla en el próximo login.'
+            : 'Contraseña actualizada.';
+
+        return redirect()->to('/admin/users')->with('success', $message);
     }
 }

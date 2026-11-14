@@ -21,7 +21,7 @@ class Auth extends BaseController
     {
         $lockedUntil = (int) session('login_locked_until');
         if ($lockedUntil > time()) {
-            return redirect()->back()->with('error', 'Demasiados intentos. Probá de nuevo en unos minutos.');
+            return redirect()->back()->with('error', 'Demasiados intentos. Probá de nuevo en 15 minutos.');
         }
 
         $email    = strtolower(trim((string) $this->request->getPost('email')));
@@ -37,8 +37,8 @@ class Auth extends BaseController
             $attempts = (int) session('login_attempts') + 1;
             session()->set('login_attempts', $attempts);
 
-            if ($attempts >= 8) {
-                session()->set('login_locked_until', time() + 600);
+            if ($attempts >= 5) {
+                session()->set('login_locked_until', time() + 900);
                 session()->set('login_attempts', 0);
             }
 
@@ -48,11 +48,16 @@ class Auth extends BaseController
         session()->remove(['login_attempts', 'login_locked_until']);
         session()->regenerate();
         session()->set('user', [
-            'id'    => (int) $user['id'],
-            'name'  => $user['name'],
-            'email' => $user['email'],
-            'role'  => $user['role'],
+            'id'                   => (int) $user['id'],
+            'name'                 => $user['name'],
+            'email'                => $user['email'],
+            'role'                 => $user['role'],
+            'must_change_password' => (int) $user['must_change_password'],
         ]);
+
+        if ((int) $user['must_change_password'] === 1) {
+            return redirect()->to('/change-password');
+        }
 
         return redirect()->to('/');
     }

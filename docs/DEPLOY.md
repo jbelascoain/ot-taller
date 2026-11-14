@@ -30,6 +30,8 @@ zip -r ot-taller-release.zip . -x ".git/*" ".env" "writable/cache/*" "writable/l
 
 1. En cPanel creá una base MySQL y un usuario con permisos.
 2. Entrá a phpMyAdmin, seleccioná la base e importá `database/schema.sql`.
+   Si actualizás una instalación existente, ejecutá también
+   `database/upgrades/2026-11-14-user-security.sql`.
 
 ## 3. Subir archivos
 
@@ -90,7 +92,15 @@ Abrí `https://tu-dominio.com/setup`:
 Después del setup, `/setup` queda deshabilitado automáticamente cuando ya existe
 un usuario. Podés vaciar `SETUP_TOKEN` en `.env`.
 
-## 7. Backups
+## 7. Email / SMTP
+
+En **Admin → Configuración → Email / SMTP**:
+
+- Gmail: host `smtp.gmail.com`, puerto `587`, cifrado `TLS`, usuario tu cuenta
+  y una **App Password** de Google (16 caracteres, no la contraseña normal).
+- Usá “Probar SMTP” con un email de destino para verificar.
+
+## 8. Backups
 
 - Base: exportación desde phpMyAdmin o `mysqldump`.
 - Archivos: `public/uploads/` (logo) y `.env`.
@@ -101,3 +111,5 @@ un usuario. Podés vaciar `SETUP_TOKEN` en `.env`.
 - No hay límite de 1.000 registros: el límite es el de tu MySQL/hosting.
 - Si usás HTTPS, `APP_URL` debe ser `https://...` para que los links y el PDF
   usen el dominio correcto.
+- El primer admin se crea en `/setup`; después, los usuarios se gestionan en
+  **Admin → Usuarios** (alta, activación, baja, reseteo y cambio obligatorio).

@@ -36,7 +36,8 @@ $is = static fn (string $prefix): bool => $path === $prefix || str_starts_with($
             <a href="<?= base_url('parts') ?>" class="<?= $is('parts') ? 'active' : '' ?>">Repuestos</a>
             <a href="<?= base_url('suppliers') ?>" class="<?= $is('suppliers') ? 'active' : '' ?>">Proveedores</a>
             <?php if (is_admin()): ?>
-                <a href="<?= base_url('admin/settings') ?>" class="<?= $is('admin') ? 'active' : '' ?>">Admin</a>
+                <a href="<?= base_url('admin/settings') ?>" class="<?= $is('admin/settings') ? 'active' : '' ?>">Configuración</a>
+                <a href="<?= base_url('admin/users') ?>" class="<?= $is('admin/users') ? 'active' : '' ?>">Usuarios</a>
             <?php endif; ?>
         </nav>
         <div class="user-menu">
@@ -45,6 +46,7 @@ $is = static fn (string $prefix): bool => $path === $prefix || str_starts_with($
                 <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
             </button>
             <span><?= esc($user['name'] ?? '') ?></span>
+            <a href="<?= base_url('change-password') ?>">Contraseña</a>
             <a href="<?= base_url('logout') ?>">Salir</a>
         </div>
     </div>

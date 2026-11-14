@@ -16,6 +16,9 @@ $routes->get('logout', 'Auth::logout');
 $routes->group('', ['filter' => 'auth'], static function (RouteCollection $routes): void {
     $routes->get('/', 'Dashboard::index');
 
+    $routes->get('change-password', 'ChangePassword::index');
+    $routes->post('change-password', 'ChangePassword::update');
+
     $routes->get('orders', 'Orders::index');
     $routes->get('orders/new', 'Orders::new');
     $routes->post('orders', 'Orders::create');
@@ -61,12 +64,14 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->post('suppliers/(:num)/delete', 'Suppliers::delete/$1');
 });
 
-$routes->group('admin', ['filter' => 'admin'], static function (RouteCollection $routes): void {
+$routes->group('admin', ['filter' => ['auth', 'admin']], static function (RouteCollection $routes): void {
     $routes->get('settings', 'Admin\\Settings::index');
     $routes->post('settings', 'Admin\\Settings::update');
+    $routes->post('settings/test-email', 'Admin\\Settings::testEmail');
 
     $routes->get('users', 'Admin\\Users::index');
     $routes->post('users', 'Admin\\Users::create');
     $routes->post('users/(:num)/toggle', 'Admin\\Users::toggle/$1');
     $routes->post('users/(:num)/password', 'Admin\\Users::password/$1');
+    $routes->post('users/(:num)/delete', 'Admin\\Users::delete/$1');
 });

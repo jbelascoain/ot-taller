@@ -17,8 +17,12 @@ con PHP 8.3 + MySQL, sin Node ni Composer en el servidor.
 ## Funcionalidades
 
 - Login con roles **Admin** y **Staff**.
-- Tablero kanban por estado de la orden, con filtro **“Esperando cliente”**
-  (órdenes Para entregar o con ítems presupuestados).
+- **Usuarios**: alta, activación/desactivación, borrado (sin poder borrarte a vos mismo),
+  reseteo de contraseña y cambio obligatorio en el próximo login.
+- **SMTP configurable** (Gmail, MailHog, etc.) con email de prueba desde el panel.
+- Bloqueo de login: 5 intentos fallidos, 15 minutos.
+- Tablero kanban por estado de la orden, con filtro por defecto **Activas**
+  (Ingreso, Presupuestado, En reparación, Para entregar) y filtro **“Esperando cliente”**.
 - Órdenes de trabajo con:
   - moto existente o nueva, cliente existente o nuevo;
   - fecha de ingreso, kilometraje, problema y diagnóstico;
@@ -30,7 +34,8 @@ con PHP 8.3 + MySQL, sin Node ni Composer en el servidor.
 - PDF A4 de la orden (logo, cliente, moto, diagnóstico, ítems y totales).
 - Botón de WhatsApp con mensaje prellenado y PDF descargable/compartible.
 - Panel de administración: nombre del taller, logo, contacto, moneda, locale,
-  texto del PDF, plantilla de WhatsApp y usuarios.
+  texto del PDF, plantilla de WhatsApp, SMTP y usuarios.
+- Tema claro/oscuro con preferencia guardada en el navegador.
 
 ## Inicio rápido con Docker
 
@@ -50,6 +55,7 @@ Otros puertos:
 
 - App: <http://localhost:8080>
 - phpMyAdmin: <http://localhost:8081>
+- MailHog (SMTP de prueba): <http://localhost:8025>
 - MySQL: `localhost:3307`
 
 Para reiniciar la base desde cero:
@@ -80,6 +86,18 @@ Todo se configura desde **Admin → Configuración** una vez instalado:
 - Símbolo de moneda y locale.
 - Texto al pie del PDF (acepta `{workshop}`).
 - Plantilla de WhatsApp: `{cliente}`, `{orden}`, `{moto}`, `{total}`.
+- SMTP: host, puerto, cifrado, usuario, App Password y remitente.
+  Para Gmail: `smtp.gmail.com`, puerto `587`, TLS y una **App Password** de Google.
+  Para probar localmente: host `mailhog`, puerto `1025`, sin cifrado.
+
+## Usuarios y permisos
+
+- **Admin**: todo, incluyendo Configuración y Usuarios.
+- **Staff**: operación del taller (órdenes, clientes, motos, repuestos, proveedores).
+- El admin crea usuarios con una contraseña temporal; el usuario debe cambiarla
+  obligatoriamente al iniciar sesión.
+- Al desactivar o borrar un usuario, su sesión se corta en la próxima petición.
+- Los usuarios no se auto-registran. El primer admin se crea en `/setup`.
 
 Variables de entorno principales (`.env` o entorno del contenedor):
 
@@ -102,6 +120,10 @@ El repo está preparado para subir a cPanel o similar **sin Composer**:
 
 - Cambiá el password del admin y `SETUP_TOKEN` después de instalar.
 - Usá HTTPS en producción (el hosting lo provee).
+- La contraseña SMTP se guarda en la tabla `settings`; usá una App Password de Gmail
+  (no la contraseña principal) y restringí el acceso al panel.
+- El bloqueo de login es por sesión del navegador: no protege contra un atacante
+  que descarte cookies. Si necesitás algo más fuerte, se puede pasar a un contador en base.
 - No subas `.env` al repo.
 - Hacé backups de la base desde phpMyAdmin o con `mysqldump`.
 - El acceso a `/admin` está restringido al rol Admin.

@@ -33,7 +33,13 @@ class Dashboard extends BaseController
         }
         unset($order);
 
-        $filter = $this->request->getGet('filter');
+        $filter = (string) ($this->request->getGet('filter') ?: 'active');
+        if (! in_array($filter, ['active', 'all', 'waiting'], true)) {
+            $filter = 'active';
+        }
+
+        $activeStatuses = ['INGRESO', 'PRESUPUESTADO', 'EN_REPARACION', 'PARA_ENTREGAR'];
+
         $waiting = array_values(array_filter($orders, static function (array $order): bool {
             if ($order['status'] === 'PARA_ENTREGAR') {
                 return true;
@@ -45,10 +51,18 @@ class Dashboard extends BaseController
             return (bool) $order['has_pending'];
         }));
 
-        $visible = $filter === 'waiting' ? $waiting : $orders;
+        if ($filter === 'waiting') {
+            $visible = $waiting;
+        } elseif ($filter === 'active') {
+            $visible = array_values(array_filter($orders, static fn (array $order): bool => in_array($order['status'], $activeStatuses, true)));
+        } else {
+            $visible = $orders;
+        }
+
+        $statuses = $filter === 'all' ? WorkOrderModel::STATUSES : $activeStatuses;
 
         $columns = [];
-        foreach (WorkOrderModel::STATUSES as $status) {
+        foreach ($statuses as $status) {
             $columns[$status] = array_values(array_filter($visible, static fn (array $order): bool => $order['status'] === $status));
         }
 

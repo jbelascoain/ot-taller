@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ingresar · <?= esc(setting('workshop_name', 'Taller')) ?></title>
+    <script>
+        try { if (localStorage.getItem('ot-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+    </script>
     <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
 </head>
 <body>

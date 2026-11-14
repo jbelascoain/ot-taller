@@ -6,8 +6,9 @@
         <p class="subtitle">Órdenes de trabajo del taller</p>
     </div>
     <div class="actions">
-        <div class="flex gap">
-            <a class="btn btn-sm <?= $filter !== 'waiting' ? 'btn-primary' : '' ?>" href="<?= base_url('/') ?>">Todas</a>
+        <div class="flex gap wrap">
+            <a class="btn btn-sm <?= $filter === 'active' ? 'btn-primary' : '' ?>" href="<?= base_url('/') ?>">Activas</a>
+            <a class="btn btn-sm <?= $filter === 'all' ? 'btn-primary' : '' ?>" href="<?= base_url('/?filter=all') ?>">Todas</a>
             <a class="btn btn-sm <?= $filter === 'waiting' ? 'btn-primary' : '' ?>" href="<?= base_url('/?filter=waiting') ?>">Esperando cliente (<?= count($waiting) ?>)</a>
         </div>
         <a class="btn btn-primary" href="<?= base_url('orders/new') ?>">+ Nueva orden</a>
@@ -17,8 +18,10 @@
 <p class="muted mb-2">
     <?php if ($filter === 'waiting'): ?>
         <?= count($waiting) ?> <?= count($waiting) === 1 ? 'orden esperando' : 'órdenes esperando' ?> respuesta del cliente
+    <?php elseif ($filter === 'active'): ?>
+        <?= $openCount ?> <?= $openCount === 1 ? 'orden en taller' : 'órdenes en taller' ?>
     <?php else: ?>
-        <?= $openCount ?> <?= $openCount === 1 ? 'orden abierta' : 'órdenes abiertas' ?>
+        <?= count($orders) ?> <?= count($orders) === 1 ? 'orden en total' : 'órdenes en total' ?>
     <?php endif; ?>
 </p>
 

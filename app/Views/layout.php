@@ -37,7 +37,6 @@ $is = static fn (string $prefix): bool => $path === $prefix || str_starts_with($
             <a href="<?= base_url('suppliers') ?>" class="<?= $is('suppliers') ? 'active' : '' ?>">Proveedores</a>
             <?php if (is_admin()): ?>
                 <a href="<?= base_url('admin/settings') ?>" class="<?= $is('admin/settings') ? 'active' : '' ?>">Configuración</a>
-                <a href="<?= base_url('admin/users') ?>" class="<?= $is('admin/users') ? 'active' : '' ?>">Usuarios</a>
             <?php endif; ?>
         </nav>
         <div class="user-menu">

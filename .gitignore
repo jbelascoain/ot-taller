@@ -1,0 +1,13 @@
+.env
+vendor/
+writable/cache/*
+writable/logs/*
+writable/session/*
+public/uploads/*
+!public/uploads/.gitkeep
+!public/uploads/.htaccess
+storage/uploads/*
+!storage/uploads/.gitkeep
+ot-taller-release.zip
+.DS_Store
+writable/debugbar/*.json

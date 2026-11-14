@@ -1,4 +1,4 @@
-.PHONY: up down fresh logs release
+.PHONY: up down fresh logs release lan
 
 up:
 	docker compose up -d --build
@@ -15,3 +15,6 @@ logs:
 
 release:
 	bash bin/build-release.sh
+
+lan:
+	@echo "http://$$(hostname -I | awk '{print $$1}'):8080"

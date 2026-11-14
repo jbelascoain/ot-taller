@@ -65,6 +65,31 @@ docker compose down -v
 docker compose up -d
 ```
 
+## Acceso desde la red local (LAN)
+
+El contenedor publica la app en el puerto **8080** de todas las interfaces.
+
+1. Averiguá la IP del servidor:
+
+```bash
+hostname -I
+```
+
+2. Desde otro dispositivo de la misma red:
+
+```
+http://192.168.68.58:8080
+```
+
+- `APP_URL` queda vacío por defecto: la app detecta el host de cada petición,
+  así funciona igual por `localhost` o por la IP de la LAN.
+  Si usás un dominio fijo, seteá `APP_URL` en `.env`.
+- Solo la app se expone a la LAN. MySQL, phpMyAdmin y MailHog se publican
+  únicamente en `127.0.0.1`.
+- Si el firewall bloquea el puerto: `sudo ufw allow 8080/tcp`.
+- Desde la misma máquina usá `http://localhost:8080`; Docker no siempre
+  permite el “hairpin” hacia la IP LAN desde el propio host.
+
 ## Estructura
 
 ```

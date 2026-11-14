@@ -16,6 +16,7 @@ services:
       DB_USER: ${DB_USER:-ot_taller}
       DB_PASS: ${DB_PASS:-ot_taller}
       SETUP_TOKEN: ${SETUP_TOKEN:-local-setup}
+      TRUST_PROXY: ${TRUST_PROXY:-0}
     depends_on:
       db:
         condition: service_healthy

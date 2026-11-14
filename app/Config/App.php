@@ -22,11 +22,29 @@ class App extends BaseConfig
     {
         parent::__construct();
 
+        $trustProxy = env('TRUST_PROXY', '0') === '1';
+
         $url = env('APP_URL', '');
         if ($url === '') {
             $scheme = (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
             $host   = $_SERVER['HTTP_HOST'] ?? 'localhost:8080';
-            $url    = $scheme . '://' . $host . '/';
+
+            if ($trustProxy) {
+                $proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
+                if ($proto !== '') {
+                    $candidate = strtolower(trim(explode(',', $proto)[0]));
+                    if (in_array($candidate, ['http', 'https'], true)) {
+                        $scheme = $candidate;
+                    }
+                }
+
+                $forwardedHost = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '';
+                if ($forwardedHost !== '') {
+                    $host = trim(explode(',', $forwardedHost)[0]);
+                }
+            }
+
+            $url = $scheme . '://' . $host . '/';
         }
 
         $this->baseURL = rtrim($url, '/') . '/';

@@ -90,6 +90,37 @@ http://192.168.68.58:8080
 - Desde la misma máquina usá `http://localhost:8080`; Docker no siempre
   permite el “hairpin” hacia la IP LAN desde el propio host.
 
+## Detrás de Nginx Proxy Manager
+
+Si publicás la app con NPM (HTTPS), el backend sigue siendo HTTP. Para que los
+assets y formularios se generen con el dominio y esquema públicos:
+
+1. En NPM, Proxy Host:
+   - Scheme: `http`
+   - Forward Hostname/IP: `192.168.68.58`
+   - Forward Port: `8080`
+   - SSL: pedir certificado y activar **Force SSL**.
+2. En el `.env` de la app:
+
+```ini
+TRUST_PROXY = 1
+# Opcional y más explícito en producción:
+# APP_URL = https://tu-dominio.com/
+```
+
+3. Reiniciar la app:
+
+```bash
+docker compose up -d app
+```
+
+NPM envía `Host` y `X-Forwarded-Proto` por defecto; con `TRUST_PROXY=1` la app
+arma los links como `https://tu-dominio.com/...` y deja de bloquear el CSS por
+mixed content.
+
+Si usás un **subpath** (por ejemplo `https://tu-dominio.com/taller`), configurá
+`APP_URL` con ese path y el location correspondiente en NPM.
+
 ## Estructura
 
 ```

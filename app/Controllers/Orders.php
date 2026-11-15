@@ -163,6 +163,7 @@ class Orders extends BaseController
             'suppliers' => (new SupplierModel())->options(),
             'statuses' => WorkOrderModel::STATUSES,
             'itemStatuses' => OrderItemModel::STATUSES,
+            'defaultItemStatus' => OrderItemModel::DEFAULT_STATUS,
             'whatsapp' => wa_link($order['customer_phone'] ?? '', $message),
         ]);
     }
@@ -225,7 +226,7 @@ class Orders extends BaseController
         $quantity = max(1, (int) $this->request->getPost('quantity'));
         $price    = $this->numberOrNull($this->request->getPost('unit_price'));
         $status   = (string) $this->request->getPost('item_status');
-        $status   = in_array($status, OrderItemModel::STATUSES, true) ? $status : 'PRESUPUESTADO';
+        $status   = in_array($status, OrderItemModel::STATUSES, true) ? $status : OrderItemModel::DEFAULT_STATUS;
 
         $db = db_connect();
         $db->transBegin();

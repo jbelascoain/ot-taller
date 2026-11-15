@@ -111,6 +111,7 @@ if (! function_exists('item_estado_label')) {
     function item_estado_label(string $status): string
     {
         return [
+            'PRESUPUESTAR'  => 'Presupuestar',
             'PRESUPUESTADO' => 'Presupuestado',
             'APROBADO'      => 'Aprobado',
             'RECHAZADO'     => 'Rechazado',
@@ -122,6 +123,7 @@ if (! function_exists('item_estado_class')) {
     function item_estado_class(string $status): string
     {
         return [
+            'PRESUPUESTAR'  => 'presupuestar',
             'PRESUPUESTADO' => 'presupuestado',
             'APROBADO'      => 'aprobado',
             'RECHAZADO'     => 'rechazado',

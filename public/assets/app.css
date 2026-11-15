@@ -105,6 +105,7 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .badge { display: inline-flex; align-items: center; padding: .18rem .5rem; border-radius: 999px; font-size: .72rem; font-weight: 700; border: 1px solid transparent; white-space: nowrap; }
 .badge.ingreso { background: #e6f4fa; color: #006c8a; border-color: #b3e2f0; }
 .badge.presupuestado { background: #fff6dd; color: #8a5a00; border-color: #f5d98a; }
+.badge.presupuestar { background: #e8effd; color: #1d4ed8; border-color: #bfd3fb; }
 .badge.reparacion { background: #ffece0; color: #a33a00; border-color: #ffc7a6; }
 .badge.para-entregar { background: #efe7fb; color: #6532a8; border-color: #d8c4f5; }
 .badge.entregado { background: #e3f7ee; color: #0b6b4b; border-color: #b5e8d5; }

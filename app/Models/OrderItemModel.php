@@ -12,7 +12,9 @@ class OrderItemModel extends Model
     protected $useTimestamps = true;
     protected $allowedFields = ['order_id', 'part_id', 'description', 'quantity', 'unit_price', 'status'];
 
-    public const STATUSES = ['PRESUPUESTADO', 'APROBADO', 'RECHAZADO'];
+    public const STATUSES = ['PRESUPUESTAR', 'PRESUPUESTADO', 'APROBADO', 'RECHAZADO'];
+
+    public const DEFAULT_STATUS = 'PRESUPUESTADO';
 
     public function forOrder(int $orderId): array
     {

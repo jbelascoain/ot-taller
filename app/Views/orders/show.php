@@ -138,7 +138,7 @@
                                 </td>
                                 <td class="cell-actions" data-label="Acciones">
                                     <div class="flex gap wrap">
-                                        <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/status') ?>" class="flex gap">
+                                        <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/status') ?>" class="flex gap wrap">
                                             <?= csrf_field() ?>
                                             <?php foreach ($itemStatuses as $status): ?>
                                                 <button class="btn btn-sm <?= $item['status'] === $status ? 'btn-primary' : '' ?>" type="submit" name="status" value="<?= esc($status) ?>">
@@ -235,7 +235,7 @@
                         <label for="item_status">Estado del ítem</label>
                         <select id="item_status" name="item_status">
                             <?php foreach ($itemStatuses as $status): ?>
-                                <option value="<?= esc($status) ?>"><?= esc(item_estado_label($status)) ?></option>
+                                <option value="<?= esc($status) ?>" <?= $status === $defaultItemStatus ? 'selected' : '' ?>><?= esc(item_estado_label($status)) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>

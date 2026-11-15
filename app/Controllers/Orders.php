@@ -21,6 +21,23 @@ class Orders extends BaseController
         return is_numeric($value) ? (float) $value : null;
     }
 
+    private function statusPayload(int $id, string $status): array
+    {
+        $payload = ['status' => $status];
+
+        if ($status !== 'ENTREGADO') {
+            return $payload;
+        }
+
+        $order = (new WorkOrderModel())->find($id);
+
+        if ($order && empty($order['delivery_date'])) {
+            $payload['delivery_date'] = date('Y-m-d');
+        }
+
+        return $payload;
+    }
+
     /**
      * Pasa la OT a "Presupuestado" cuando ya tiene diagnóstico y todos sus
      * repuestos están presupuestados. Solo avanza desde "Ingreso" para no
@@ -248,7 +265,7 @@ class Orders extends BaseController
             return redirect()->back()->with('error', 'Estado inválido.');
         }
 
-        (new WorkOrderModel())->update($id, ['status' => $status]);
+        (new WorkOrderModel())->update($id, $this->statusPayload($id, $status));
 
         if ($this->request->isAJAX()) {
             return $this->response->setJSON(['ok' => true, 'status' => $status]);

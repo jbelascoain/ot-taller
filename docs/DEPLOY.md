@@ -31,7 +31,8 @@ zip -r ot-taller-release.zip . -x ".git/*" ".env" "writable/cache/*" "writable/l
 1. En cPanel creá una base MySQL y un usuario con permisos.
 2. Entrá a phpMyAdmin, seleccioná la base e importá `database/schema.sql`.
    Si actualizás una instalación existente, ejecutá también
-   `database/upgrades/2026-11-14-user-security.sql`.
+   `database/upgrades/2026-11-14-user-security.sql` y
+   `database/upgrades/2026-11-15-delivery-dates.sql`.
 
 ## 3. Subir archivos
 

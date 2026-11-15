@@ -20,6 +20,7 @@ $routes->get('logout', 'Auth::logout');
 
 $routes->group('', ['filter' => 'auth'], static function (RouteCollection $routes): void {
     $routes->get('/', 'Dashboard::index');
+    $routes->get('metricas', 'Metrics::index');
 
     $routes->get('change-password', 'ChangePassword::index');
     $routes->post('change-password', 'ChangePassword::update');

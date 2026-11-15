@@ -76,6 +76,35 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 1rem 0; }
 .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .8rem 1rem; }
 .stat .num { font-size: 1.5rem; font-weight: 700; }
 .stat .lbl { color: var(--muted); font-size: .8rem; }
+.metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.metric-card { min-width: 0; }
+.metric-card .num { font-size: 1.35rem; }
+.metric-trend { display: block; margin-top: .35rem; font-size: .75rem; color: var(--muted); }
+.metric-trend.good { color: #0b6b4b; }
+.metric-trend.bad { color: #a31818; }
+[data-theme="dark"] .metric-trend.good { color: #7ee2b8; }
+[data-theme="dark"] .metric-trend.bad { color: #ff9b9b; }
+.metric-note { margin-top: .2rem; font-size: .7rem; color: var(--muted); }
+.metrics-filter { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.metrics-filter select { width: auto; max-width: 220px; }
+.metrics-custom { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.metrics-custom.hidden { display: none !important; }
+.metrics-custom input { width: auto; max-width: 170px; }
+.metrics-period { color: var(--muted); font-size: .85rem; }
+.metrics-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.metrics-tables { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.chart-card { min-width: 0; }
+.chart-wrap { position: relative; height: 280px; padding: .75rem 1rem 1rem; }
+.chart-wrap-sm { height: 240px; }
+.chart-wrap canvas { max-width: 100%; }
+@media (max-width: 1100px) { .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .metrics-charts, .metrics-tables { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+  .metric-grid { grid-template-columns: 1fr; }
+  .metrics-custom { width: 100%; }
+  .metrics-filter select, .metrics-custom input { max-width: none; width: 100%; }
+  .metrics-filter > .btn { width: 100%; }
+}
 .field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .8rem; }
 .field > label { font-size: .82rem; font-weight: 600; color: #374151; }
 input[type="text"], input[type="search"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], input[type="tel"], select, textarea { width: 100%; padding: .5rem .65rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; color: var(--text); }

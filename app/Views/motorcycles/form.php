@@ -1,6 +1,10 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('content') ?>
 <?php $isEdit = $moto !== null; ?>
+<?php
+$selectedCustomerId   = old('customer_id', $moto['customer_id'] ?? '');
+$selectedCustomerName = old('customer_search', $moto['customer_name'] ?? '');
+?>
 <div class="page-head">
     <div><h1><?= $isEdit ? 'Editar moto' : 'Nueva moto' ?></h1><p class="subtitle">La patente es opcional; el UID identifica la moto.</p></div>
     <a class="btn" href="<?= base_url('motorcycles') ?>">Volver</a>
@@ -9,15 +13,12 @@
     <?= csrf_field() ?>
     <div class="form-grid">
         <div class="field span-2">
-            <label for="customer_id">Cliente dueño</label>
-            <select id="customer_id" name="customer_id" required>
-                <option value="">Elegir cliente…</option>
-                <?php foreach ($customers as $customer): ?>
-                    <option value="<?= (int) $customer['id'] ?>" <?= (int) old('customer_id', $moto['customer_id'] ?? 0) === (int) $customer['id'] ? 'selected' : '' ?>>
-                        <?= esc($customer['name']) ?><?= $customer['phone'] ? ' · ' . esc($customer['phone']) : '' ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+            <label for="customer_search">Cliente dueño</label>
+            <div class="combo" data-combo data-endpoint="<?= base_url('customers/search') ?>" data-combo-empty="No hay clientes cargados.">
+                <input type="hidden" id="customer_id" name="customer_id" value="<?= esc((string) $selectedCustomerId) ?>" data-combo-value>
+                <input type="text" id="customer_search" name="customer_search" class="combo-input" value="<?= esc((string) $selectedCustomerName) ?>" placeholder="Buscar por nombre, teléfono o email…" autocomplete="off" data-combo-input>
+                <div class="combo-list" data-combo-list hidden></div>
+            </div>
         </div>
         <div class="field">
             <label for="plate">Patente (opcional)</label>

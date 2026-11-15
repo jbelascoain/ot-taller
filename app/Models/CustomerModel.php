@@ -26,6 +26,22 @@ class CustomerModel extends Model
         return $this->orderBy('id', 'DESC')->findAll();
     }
 
+    public function searchLimited(string $term, int $limit = 20): array
+    {
+        $limit = max(1, min(50, $limit));
+        $term  = trim($term);
+
+        if ($term !== '') {
+            $this->groupStart()
+                ->like('name', $term)
+                ->orLike('phone', $term)
+                ->orLike('email', $term)
+                ->groupEnd();
+        }
+
+        return $this->orderBy('name', 'ASC')->findAll($limit);
+    }
+
     public function options(): array
     {
         return $this->orderBy('name', 'ASC')->findAll();

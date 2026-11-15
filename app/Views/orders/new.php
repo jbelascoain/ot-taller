@@ -59,13 +59,12 @@
         </div>
 
         <div class="field">
-            <label for="customer_id">Cliente dueño</label>
-            <select id="customer_id" name="customer_id">
-                <option value="">— Cliente nuevo —</option>
-                <?php foreach ($customers as $customer): ?>
-                    <option value="<?= (int) $customer['id'] ?>"><?= esc($customer['name']) ?><?= $customer['phone'] ? ' · ' . esc($customer['phone']) : '' ?></option>
-                <?php endforeach; ?>
-            </select>
+            <label for="customer_search">Cliente dueño</label>
+            <div class="combo" data-combo data-endpoint="<?= base_url('customers/search') ?>" data-combo-empty="No hay clientes cargados.">
+                <input type="hidden" id="customer_id" name="customer_id" value="<?= esc((string) old('customer_id')) ?>" data-combo-value>
+                <input type="text" id="customer_search" name="customer_search" class="combo-input" value="<?= esc((string) old('customer_search')) ?>" placeholder="Buscar por nombre, teléfono o email…" autocomplete="off" data-combo-input>
+                <div class="combo-list" data-combo-list hidden></div>
+            </div>
         </div>
         <label class="check mb-1">
             <input type="checkbox" name="new_customer" value="1" data-toggle-target="#new-customer-fields">

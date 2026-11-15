@@ -82,7 +82,6 @@ class Orders extends BaseController
     {
         return view('orders/new', [
             'title'       => 'Nueva orden',
-            'customers'   => (new CustomerModel())->options(),
             'motorcycles' => (new MotorcycleModel())->options(),
             'today'       => date('Y-m-d'),
         ]);

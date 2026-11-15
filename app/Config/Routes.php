@@ -38,6 +38,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->get('orders/(:num)/whatsapp', 'Orders::whatsapp/$1');
 
     $routes->get('customers', 'Customers::index');
+    $routes->get('customers/search', 'Customers::search');
     $routes->get('customers/new', 'Customers::new');
     $routes->post('customers', 'Customers::create');
     $routes->get('customers/(:num)', 'Customers::show/$1');

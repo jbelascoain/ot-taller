@@ -51,9 +51,8 @@ class Motorcycles extends BaseController
     public function new()
     {
         return view('motorcycles/form', [
-            'title'     => 'Nueva moto',
-            'moto'      => null,
-            'customers' => (new CustomerModel())->options(),
+            'title' => 'Nueva moto',
+            'moto'  => null,
         ]);
     }
 
@@ -75,10 +74,12 @@ class Motorcycles extends BaseController
             return redirect()->to('/motorcycles')->with('error', 'Moto no encontrada.');
         }
 
+        $customer = (new CustomerModel())->find((int) $moto['customer_id']);
+        $moto['customer_name'] = $customer['name'] ?? '';
+
         return view('motorcycles/form', [
-            'title'     => 'Editar moto',
-            'moto'      => $moto,
-            'customers' => (new CustomerModel())->options(),
+            'title' => 'Editar moto',
+            'moto'  => $moto,
         ]);
     }
 

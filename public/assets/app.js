@@ -91,6 +91,7 @@
     var priceEl   = combo.getAttribute('data-price-target')
       ? document.querySelector(combo.getAttribute('data-price-target'))
       : null;
+    var emptyLabel = combo.getAttribute('data-combo-empty') || 'No hay repuestos cargados.';
     if (!endpoint || !input || !hidden || !list) return;
 
     var items = [];
@@ -119,8 +120,8 @@
 
     function pick(item) {
       hidden.value = item.id;
-      input.value = item.description + (item.sku ? ' · ' + item.sku : '');
-      if (priceEl) priceEl.value = item.price;
+      input.value = item.input_label || item.label || item.description || '';
+      if (priceEl && item.price !== undefined && item.price !== null) priceEl.value = item.price;
       hidden.dispatchEvent(new Event('change'));
       closeList();
     }
@@ -134,7 +135,7 @@
         var empty = document.createElement('div');
         empty.className = 'combo-empty';
         empty.textContent = input.value.trim() === ''
-          ? 'No hay repuestos cargados.'
+          ? emptyLabel
           : 'Sin resultados para “' + input.value.trim() + '”.';
         list.appendChild(empty);
         list.hidden = false;
@@ -152,21 +153,27 @@
 
         var title = document.createElement('span');
         title.className = 'combo-option-title';
-        title.textContent = item.description;
-
-        var price = document.createElement('span');
-        price.className = 'combo-option-price';
-        price.textContent = item.price_label;
+        title.textContent = item.label || item.description || '';
 
         head.appendChild(title);
-        head.appendChild(price);
 
-        var meta = document.createElement('span');
-        meta.className = 'combo-option-meta';
-        meta.textContent = [item.uid, item.brand, item.sku].filter(Boolean).join(' · ');
+        if (item.price_label) {
+          var price = document.createElement('span');
+          price.className = 'combo-option-price';
+          price.textContent = item.price_label;
+          head.appendChild(price);
+        }
+
+        var metaText = item.meta || [item.uid, item.brand, item.sku].filter(Boolean).join(' · ');
 
         option.appendChild(head);
-        option.appendChild(meta);
+
+        if (metaText) {
+          var meta = document.createElement('span');
+          meta.className = 'combo-option-meta';
+          meta.textContent = metaText;
+          option.appendChild(meta);
+        }
 
         option.addEventListener('mousedown', function (event) {
           // Evita que el input pierda el foco antes del click.

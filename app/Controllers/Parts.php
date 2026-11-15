@@ -39,9 +39,18 @@ class Parts extends BaseController
         $limit = (int) ($this->request->getGet('limit') ?? 20);
 
         $items = array_map(static function (array $part): array {
+            $meta = implode(' · ', array_filter([
+                uid('REP', $part['id']),
+                (string) ($part['brand'] ?? ''),
+                (string) ($part['sku'] ?? ''),
+            ]));
+
             return [
                 'id'          => (int) $part['id'],
                 'uid'         => uid('REP', $part['id']),
+                'label'       => $part['description'],
+                'input_label' => $part['description'] . (! empty($part['sku']) ? ' · ' . $part['sku'] : ''),
+                'meta'        => $meta,
                 'description' => $part['description'],
                 'brand'       => (string) ($part['brand'] ?? ''),
                 'sku'         => (string) ($part['sku'] ?? ''),

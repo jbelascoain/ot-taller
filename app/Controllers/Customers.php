@@ -34,6 +34,26 @@ class Customers extends BaseController
         ]);
     }
 
+    public function search()
+    {
+        $term  = trim((string) $this->request->getGet('q'));
+        $limit = (int) ($this->request->getGet('limit') ?? 20);
+
+        $items = array_map(static function (array $customer): array {
+            return [
+                'id'          => (int) $customer['id'],
+                'label'       => $customer['name'],
+                'input_label' => $customer['name'],
+                'meta'        => implode(' · ', array_filter([
+                    (string) ($customer['phone'] ?? ''),
+                    (string) ($customer['email'] ?? ''),
+                ])),
+            ];
+        }, (new CustomerModel())->searchLimited($term, $limit));
+
+        return $this->response->setJSON(['items' => $items]);
+    }
+
     public function new()
     {
         return view('customers/form', ['title' => 'Nuevo cliente', 'customer' => null]);

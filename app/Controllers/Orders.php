@@ -21,6 +21,36 @@ class Orders extends BaseController
         return is_numeric($value) ? (float) $value : null;
     }
 
+    /**
+     * Pasa la OT a "Presupuestado" cuando ya tiene diagnóstico y todos sus
+     * repuestos están presupuestados. Solo avanza desde "Ingreso" para no
+     * retroceder órdenes que ya están en reparación o entregadas.
+     */
+    private function syncQuotedOrderStatus(int $orderId): bool
+    {
+        $order = (new WorkOrderModel())->find($orderId);
+
+        if (! $order || $order['status'] !== 'INGRESO' || trim((string) $order['diagnosis']) === '') {
+            return false;
+        }
+
+        $items = (new OrderItemModel())->where('order_id', $orderId)->findAll();
+
+        if (count($items) === 0) {
+            return false;
+        }
+
+        foreach ($items as $item) {
+            if ($item['status'] !== 'PRESUPUESTADO') {
+                return false;
+            }
+        }
+
+        (new WorkOrderModel())->update($orderId, ['status' => 'PRESUPUESTADO']);
+
+        return true;
+    }
+
     public function index()
     {
         $term   = trim((string) $this->request->getGet('q'));
@@ -191,7 +221,10 @@ class Orders extends BaseController
             'delivery_date'  => $this->request->getPost('delivery_date') ?: null,
         ]);
 
-        return redirect()->to('/orders/' . $id)->with('success', 'Orden actualizada.');
+        $autoQuoted = $this->syncQuotedOrderStatus($id);
+        $message    = 'Orden actualizada.' . ($autoQuoted ? ' La orden pasó a Presupuestado.' : '');
+
+        return redirect()->to('/orders/' . $id)->with('success', $message);
     }
 
     public function status(int $id)
@@ -299,7 +332,10 @@ class Orders extends BaseController
 
             $db->transCommit();
 
-            return redirect()->to('/orders/' . $id . '#add-item')->with('success', 'Ítem agregado.');
+            $autoQuoted = $this->syncQuotedOrderStatus($id);
+            $message    = 'Ítem agregado.' . ($autoQuoted ? ' La orden pasó a Presupuestado.' : '');
+
+            return redirect()->to('/orders/' . $id . '#add-item')->with('success', $message);
         } catch (\Throwable $e) {
             $db->transRollback();
 
@@ -321,7 +357,10 @@ class Orders extends BaseController
             ->set(['status' => $status])
             ->update();
 
-        return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Ítem actualizado.');
+        $autoQuoted = $this->syncQuotedOrderStatus($orderId);
+        $message    = 'Ítem actualizado.' . ($autoQuoted ? ' La orden pasó a Presupuestado.' : '');
+
+        return redirect()->to('/orders/' . $orderId . '#items')->with('success', $message);
     }
 
     public function updateItem(int $orderId, int $itemId)
@@ -413,7 +452,10 @@ class Orders extends BaseController
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'No se pudo guardar el repuesto.');
         }
 
-        return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Repuesto actualizado.');
+        $autoQuoted = $this->syncQuotedOrderStatus($orderId);
+        $message    = 'Repuesto actualizado.' . ($autoQuoted ? ' La orden pasó a Presupuestado.' : '');
+
+        return redirect()->to('/orders/' . $orderId . '#items')->with('success', $message);
     }
 
     public function deleteItem(int $orderId, int $itemId)
@@ -423,7 +465,10 @@ class Orders extends BaseController
             ->where('order_id', $orderId)
             ->delete();
 
-        return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Ítem eliminado.');
+        $autoQuoted = $this->syncQuotedOrderStatus($orderId);
+        $message    = 'Ítem eliminado.' . ($autoQuoted ? ' La orden pasó a Presupuestado.' : '');
+
+        return redirect()->to('/orders/' . $orderId . '#items')->with('success', $message);
     }
 
     public function pdf(int $id)

@@ -24,8 +24,8 @@ $is = static fn (string $prefix): bool => $path === $prefix || str_starts_with($
                 <img src="<?= base_url('uploads/' . $logo) ?>" alt="<?= esc(setting('workshop_name', 'Taller')) ?>">
             <?php else: ?>
                 <span class="brand-mark">OT</span>
+                <span><?= esc(setting('workshop_name', 'Taller')) ?></span>
             <?php endif; ?>
-            <span><?= esc(setting('workshop_name', 'Taller')) ?></span>
         </a>
         <button class="nav-toggle" id="navToggle" type="button" aria-label="Menú">☰</button>
         <nav class="nav" id="mainNav">

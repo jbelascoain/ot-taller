@@ -21,7 +21,7 @@
                 <label for="logo">Logo (PNG, JPG o WEBP, máximo 2 MB)</label>
                 <input type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/webp">
                 <?php if (! empty($settings['logo_path'])): ?>
-                    <div class="mt-1"><img src="<?= base_url('uploads/' . $settings['logo_path']) ?>" alt="Logo" style="max-height:60px"></div>
+                    <div class="mt-1"><img class="logo-preview" src="<?= base_url('uploads/' . $settings['logo_path']) ?>" alt="Logo" style="max-height:100px"></div>
                     <label class="check mt-1"><input type="checkbox" name="remove_logo" value="1"> Quitar logo</label>
                 <?php endif; ?>
             </div>

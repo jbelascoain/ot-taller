@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Libraries\ImageTools;
 use App\Libraries\Mailer;
 use App\Models\SettingModel;
 
@@ -70,6 +71,10 @@ class Settings extends BaseController
             $ext     = $mime === 'image/png' ? 'png' : ($mime === 'image/webp' ? 'webp' : 'jpg');
             $newName = 'logo-' . time() . '.' . $ext;
             $file->move(FCPATH . 'uploads', $newName);
+
+            if ($ext === 'png') {
+                (new ImageTools())->trimTransparentPng(FCPATH . 'uploads/' . $newName);
+            }
 
             $old = $model->getValue('logo_path');
             if ($old !== '' && is_file(FCPATH . 'uploads/' . $old)) {

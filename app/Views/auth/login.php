@@ -15,11 +15,11 @@
     <div class="auth-card">
         <div class="auth-brand">
             <?php if ($logo): ?>
-                <img src="<?= base_url('uploads/' . $logo) ?>" alt="Logo">
+                <img src="<?= base_url('uploads/' . $logo) ?>" alt="<?= esc(setting('workshop_name', 'Taller')) ?>">
             <?php else: ?>
                 <span class="brand-mark">OT</span>
+                <span><?= esc(setting('workshop_name', 'Taller')) ?></span>
             <?php endif; ?>
-            <span><?= esc(setting('workshop_name', 'Taller')) ?></span>
         </div>
         <div class="card">
             <div class="card-body">

@@ -14,7 +14,7 @@ $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?
     .right { text-align: right; }
     .header { width: 100%; border-bottom: 1px solid #bbb; padding-bottom: 8px; }
     .header td { vertical-align: top; }
-    .logo { max-height: 48px; max-width: 150px; }
+    .logo { max-height: 70px; max-width: 200px; }
     .brand { font-size: 14pt; font-weight: bold; }
     .ot { font-size: 20pt; font-weight: bold; }
     .label { font-size: 7pt; text-transform: uppercase; letter-spacing: .08em; color: #777; }
@@ -38,9 +38,10 @@ $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?
     <tr>
         <td>
             <?php if ($logo): ?>
-                <img class="logo" src="<?= $logo ?>" alt="Logo">
+                <img class="logo" src="<?= $logo ?>" alt="<?= esc($workshop) ?>">
+            <?php else: ?>
+                <div class="brand"><?= esc($workshop) ?></div>
             <?php endif; ?>
-            <div class="brand"><?= esc($workshop) ?></div>
             <?php if ($contact !== ''): ?><div class="muted small"><?= esc($contact) ?></div><?php endif; ?>
         </td>
         <td class="right">

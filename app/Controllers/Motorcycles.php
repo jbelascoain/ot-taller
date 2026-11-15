@@ -34,6 +34,28 @@ class Motorcycles extends BaseController
         ]);
     }
 
+    public function search()
+    {
+        $term  = trim((string) $this->request->getGet('q'));
+        $limit = (int) ($this->request->getGet('limit') ?? 20);
+
+        $items = array_map(static function (array $moto): array {
+            $bike = trim(implode(' ', array_filter([$moto['brand'] ?? '', $moto['model'] ?? ''])));
+
+            return [
+                'id'          => (int) $moto['id'],
+                'label'       => uid('MOT', $moto['id']) . ' · ' . ($bike !== '' ? $bike : 'Moto'),
+                'input_label' => uid('MOT', $moto['id']) . ' · ' . ($bike !== '' ? $bike : 'Moto'),
+                'meta'        => implode(' · ', array_filter([
+                    (string) ($moto['plate'] ?? ''),
+                    (string) ($moto['customer_name'] ?? ''),
+                ])),
+            ];
+        }, (new MotorcycleModel())->search($term, $limit));
+
+        return $this->response->setJSON(['items' => $items]);
+    }
+
     public function show(int $id)
     {
         $moto = (new MotorcycleModel())->findWithCustomer($id);

@@ -18,15 +18,12 @@
 
     <div id="existing-moto">
         <div class="field">
-            <label for="motorcycle_id">Moto</label>
-            <select id="motorcycle_id" name="motorcycle_id">
-                <option value="">Elegir moto…</option>
-                <?php foreach ($motorcycles as $moto): ?>
-                    <option value="<?= (int) $moto['id'] ?>">
-                        <?= esc(uid('MOT', $moto['id'])) ?> · <?= esc(trim($moto['brand'] . ' ' . $moto['model'])) ?><?= $moto['plate'] ? ' · ' . esc($moto['plate']) : '' ?> · <?= esc($moto['customer_name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+            <label for="motorcycle_search">Moto</label>
+            <div class="combo" data-combo data-endpoint="<?= base_url('motorcycles/search') ?>" data-combo-empty="No hay motos cargadas.">
+                <input type="hidden" id="motorcycle_id" name="motorcycle_id" value="<?= esc((string) old('motorcycle_id')) ?>" data-combo-value>
+                <input type="text" id="motorcycle_search" name="motorcycle_search" class="combo-input" value="<?= esc((string) old('motorcycle_search')) ?>" placeholder="Buscar por patente, marca, modelo o cliente…" autocomplete="off" data-combo-input>
+                <div class="combo-list" data-combo-list hidden></div>
+            </div>
         </div>
     </div>
 

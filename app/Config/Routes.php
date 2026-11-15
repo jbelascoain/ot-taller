@@ -47,6 +47,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->post('customers/(:num)/delete', 'Customers::delete/$1');
 
     $routes->get('motorcycles', 'Motorcycles::index');
+    $routes->get('motorcycles/search', 'Motorcycles::search');
     $routes->get('motorcycles/new', 'Motorcycles::new');
     $routes->post('motorcycles', 'Motorcycles::create');
     $routes->get('motorcycles/(:num)', 'Motorcycles::show/$1');

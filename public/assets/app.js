@@ -302,6 +302,69 @@
     });
   }
 
+  // Filtro de texto del tablero (funciona sobre las tarjetas ya cargadas).
+  var boardSearch = document.querySelector('[data-board-search]');
+  if (boardSearch) {
+    var searchBoard = document.querySelector('[data-board]');
+    var searchStatus = document.querySelector('[data-board-search-status]');
+
+    var normalizeText = function (text) {
+      return String(text || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    };
+
+    var applyBoardSearch = function () {
+      var term = normalizeText(boardSearch.value.trim());
+      var totalVisible = 0;
+      var results = [];
+
+      searchBoard.querySelectorAll('.column').forEach(function (column) {
+        var jobs = column.querySelectorAll('.job');
+        var visible = 0;
+
+        jobs.forEach(function (job) {
+          var matches = term === '' || normalizeText(job.textContent).indexOf(term) !== -1;
+          job.classList.toggle('hidden', !matches);
+          if (matches) visible++;
+        });
+
+        var count = column.querySelector('.count');
+        if (count) count.textContent = visible;
+
+        var empty = column.querySelector('.column-empty');
+        if (empty) {
+          if (visible === 0) {
+            empty.hidden = false;
+            empty.textContent = jobs.length === 0 || term === '' ? 'Sin órdenes' : 'Sin resultados';
+          } else {
+            empty.hidden = true;
+          }
+        }
+
+        totalVisible += visible;
+        results.push({ column: column, visible: visible });
+      });
+
+      // Al buscar, ocultamos las columnas sin coincidencias para que los
+      // resultados queden a la vista sin tener que scrollear el tablero.
+      var hideEmpty = term !== '' && totalVisible > 0;
+      results.forEach(function (entry) {
+        entry.column.classList.toggle('hidden', hideEmpty && entry.visible === 0);
+      });
+
+      if (searchStatus) {
+        searchStatus.textContent = term === ''
+          ? ''
+          : totalVisible + (totalVisible === 1 ? ' coincidencia' : ' coincidencias');
+      }
+    };
+
+    boardSearch.addEventListener('input', applyBoardSearch);
+    applyBoardSearch();
+  }
+
   var board = document.querySelector('[data-board]');
   if (board) {
     var dragged = null;

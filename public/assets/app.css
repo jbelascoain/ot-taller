@@ -119,6 +119,8 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 [data-theme="dark"] .alert.success { background: #10251c; border-color: #1f5c46; color: #7ee2b8; }
 [data-theme="dark"] .alert.error { background: #2a1515; border-color: #6b2a2a; color: #ff9b9b; }
 .board { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: 1rem; align-items: flex-start; }
+.board-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.board-search { flex: 1 1 260px; max-width: 420px; }
 .column { min-width: 200px; flex: 1 1 200px; background: var(--column); border-radius: var(--radius); padding: .5rem; min-height: 220px; }
 .column-head { display: flex; align-items: center; justify-content: space-between; padding: .35rem .4rem .55rem; font-size: .8rem; font-weight: 700; }
 .column-head .count { color: var(--muted); font-weight: 600; }

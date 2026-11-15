@@ -25,6 +25,11 @@
     <?php endif; ?>
 </p>
 
+<div class="board-tools mb-2">
+    <input type="search" class="board-search" placeholder="Buscar OT, cliente, moto o patente…" autocomplete="off" data-board-search aria-label="Buscar órdenes">
+    <span class="text-sm muted" data-board-search-status></span>
+</div>
+
 <div class="board" data-board>
     <?php foreach ($columns as $status => $orders): ?>
         <section class="column" data-status="<?= esc($status) ?>">
@@ -32,9 +37,7 @@
                 <span class="badge <?= esc(estado_class($status)) ?>"><?= esc(estado_label($status)) ?></span>
                 <span class="count"><?= count($orders) ?></span>
             </div>
-            <?php if (count($orders) === 0): ?>
-                <p class="muted text-xs" style="padding:.4rem">Sin órdenes</p>
-            <?php endif; ?>
+            <p class="column-empty muted text-xs" style="padding:.4rem" <?= count($orders) > 0 ? 'hidden' : '' ?>>Sin órdenes</p>
             <?php foreach ($orders as $order): ?>
                 <?php
                 $days = dias_en_taller($order['entry_date']);

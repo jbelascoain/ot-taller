@@ -33,6 +33,27 @@ class Parts extends BaseController
         ]);
     }
 
+    public function search()
+    {
+        $term  = trim((string) $this->request->getGet('q'));
+        $limit = (int) ($this->request->getGet('limit') ?? 20);
+
+        $items = array_map(static function (array $part): array {
+            return [
+                'id'          => (int) $part['id'],
+                'uid'         => uid('REP', $part['id']),
+                'description' => $part['description'],
+                'brand'       => (string) ($part['brand'] ?? ''),
+                'sku'         => (string) ($part['sku'] ?? ''),
+                'price'       => (float) $part['sale_price'],
+                'price_label' => money($part['sale_price']),
+                'stock'       => (int) $part['stock'],
+            ];
+        }, (new PartModel())->search($term, $limit));
+
+        return $this->response->setJSON(['items' => $items]);
+    }
+
     public function new()
     {
         return view('parts/form', [

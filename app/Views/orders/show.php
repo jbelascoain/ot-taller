@@ -38,13 +38,12 @@
     <div class="card-body">
         <form method="post" action="<?= base_url('orders/' . $order['id'] . '/status') ?>" class="actions mb-2">
             <?= csrf_field() ?>
-            <label class="text-sm muted">Estado</label>
-            <select name="status" style="max-width:220px">
+            <label class="text-sm muted" for="order_status">Estado</label>
+            <select id="order_status" name="status" style="max-width:220px" data-auto-submit>
                 <?php foreach ($statuses as $status): ?>
                     <option value="<?= esc($status) ?>" <?= $status === $order['status'] ? 'selected' : '' ?>><?= esc(estado_label($status)) ?></option>
                 <?php endforeach; ?>
             </select>
-            <button class="btn btn-sm" type="submit">Cambiar estado</button>
         </form>
 
         <form method="post" action="<?= base_url('orders/' . $order['id'] . '/update') ?>">
@@ -169,15 +168,12 @@
                 <div id="catalog-fields">
                     <div class="form-grid">
                         <div class="field span-2">
-                            <label for="part_id">Repuesto</label>
-                            <select id="part_id" name="part_id" data-part-select>
-                                <option value="">Elegir repuesto…</option>
-                                <?php foreach ($parts as $part): ?>
-                                    <option value="<?= (int) $part['id'] ?>" data-price="<?= esc((string) $part['sale_price']) ?>" data-desc="<?= esc($part['description']) ?>">
-                                        <?= esc(uid('REP', $part['id'])) ?> · <?= esc($part['description']) ?> · <?= esc(money($part['sale_price'])) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label for="part_search">Repuesto</label>
+                            <div class="combo" data-combo data-endpoint="<?= base_url('parts/search') ?>" data-price-target="#unit_price">
+                                <input type="hidden" id="part_id" name="part_id" data-combo-value>
+                                <input type="text" id="part_search" class="combo-input" placeholder="Buscar por descripción, marca, SKU o código…" autocomplete="off" data-combo-input>
+                                <div class="combo-list" data-combo-list hidden></div>
+                            </div>
                         </div>
                         <div class="field">
                             <label for="quantity">Cantidad</label>

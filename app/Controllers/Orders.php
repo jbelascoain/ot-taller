@@ -160,7 +160,6 @@ class Orders extends BaseController
             'order'    => $order,
             'items'    => $items,
             'totals'   => $totals,
-            'parts'    => (new PartModel())->options(),
             'suppliers' => (new SupplierModel())->options(),
             'statuses' => WorkOrderModel::STATUSES,
             'itemStatuses' => OrderItemModel::STATUSES,

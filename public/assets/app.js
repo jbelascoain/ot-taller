@@ -24,42 +24,216 @@
     });
   });
 
-  document.querySelectorAll('[data-toggle-target]').forEach(function (input) {
-    var target = document.querySelector(input.getAttribute('data-toggle-target'));
-    if (!target) return;
-    var sync = function () {
+  // Campos condicionales (radios y checkboxes). Se sincroniza todo el grupo,
+  // porque al cambiar de radio solo dispara "change" el que queda seleccionado.
+  var toggleInputs = Array.prototype.slice.call(document.querySelectorAll('[data-toggle-target]'));
+
+  function syncToggle(input) {
+    var peers = [input];
+
+    if (input.type === 'radio' && input.name) {
+      peers = toggleInputs.filter(function (peer) {
+        return peer.type === 'radio' && peer.name === input.name && peer.form === input.form;
+      });
+      if (peers.indexOf(input) === -1) peers.push(input);
+    }
+
+    peers.forEach(function (peer) {
+      var target = document.querySelector(peer.getAttribute('data-toggle-target'));
+      if (!target) return;
+
       var show;
-      if (input.type === 'radio') show = input.checked;
-      else if (input.type === 'checkbox') show = input.checked;
-      else show = input.value === input.getAttribute('data-toggle-value');
+      if (peer.type === 'radio' || peer.type === 'checkbox') show = peer.checked;
+      else show = peer.value === peer.getAttribute('data-toggle-value');
+
       target.classList.toggle('hidden', !show);
       target.querySelectorAll('input, select, textarea, button').forEach(function (el) {
         el.disabled = !show;
       });
+
       if (show) {
         target.querySelectorAll('[data-toggle-target]').forEach(function (child) {
-          child.dispatchEvent(new Event('change'));
+          syncToggle(child);
         });
       }
-    };
-    input.addEventListener('change', sync);
-    if ((input.type === 'radio' || input.type === 'checkbox') && !input.checked) target.classList.add('hidden');
-    else sync();
-  });
-
-  var partSelect = document.querySelector('[data-part-select]');
-  if (partSelect) {
-    partSelect.addEventListener('change', function () {
-      var option = partSelect.options[partSelect.selectedIndex];
-      if (!option) return;
-      var price = option.getAttribute('data-price');
-      var desc = option.getAttribute('data-desc');
-      var priceInput = document.querySelector('[data-part-price]');
-      var descInput = document.querySelector('[data-part-description]');
-      if (priceInput && price !== null) priceInput.value = price;
-      if (descInput && desc !== null) descInput.value = desc;
     });
   }
+
+  toggleInputs.forEach(function (input) {
+    input.addEventListener('change', function () { syncToggle(input); });
+  });
+  toggleInputs.forEach(syncToggle);
+
+  // Selects que se envían solos (por ejemplo el estado de la orden).
+  document.querySelectorAll('[data-auto-submit]').forEach(function (el) {
+    el.addEventListener('change', function () {
+      if (el.form) el.form.submit();
+    });
+  });
+
+  // Selector de repuestos con búsqueda contra el servidor.
+  document.querySelectorAll('[data-combo]').forEach(function (combo) {
+    var endpoint  = combo.getAttribute('data-endpoint');
+    var input     = combo.querySelector('[data-combo-input]');
+    var hidden    = combo.querySelector('[data-combo-value]');
+    var list      = combo.querySelector('[data-combo-list]');
+    var priceEl   = combo.getAttribute('data-price-target')
+      ? document.querySelector(combo.getAttribute('data-price-target'))
+      : null;
+    if (!endpoint || !input || !hidden || !list) return;
+
+    var items = [];
+    var activeIndex = -1;
+    var timer = null;
+    var controller = null;
+
+    function closeList() {
+      list.hidden = true;
+      list.innerHTML = '';
+      activeIndex = -1;
+    }
+
+    function highlight(index) {
+      var options = list.querySelectorAll('.combo-option');
+      if (!options.length) return;
+      if (index < 0) index = options.length - 1;
+      if (index >= options.length) index = 0;
+      activeIndex = index;
+      options.forEach(function (option, i) {
+        option.classList.toggle('active', i === activeIndex);
+      });
+      var current = options[activeIndex];
+      if (current && current.scrollIntoView) current.scrollIntoView({ block: 'nearest' });
+    }
+
+    function pick(item) {
+      hidden.value = item.id;
+      input.value = item.description + (item.sku ? ' · ' + item.sku : '');
+      if (priceEl) priceEl.value = item.price;
+      hidden.dispatchEvent(new Event('change'));
+      closeList();
+    }
+
+    function render(rows) {
+      items = rows || [];
+      activeIndex = -1;
+      list.innerHTML = '';
+
+      if (!items.length) {
+        var empty = document.createElement('div');
+        empty.className = 'combo-empty';
+        empty.textContent = input.value.trim() === ''
+          ? 'No hay repuestos cargados.'
+          : 'Sin resultados para “' + input.value.trim() + '”.';
+        list.appendChild(empty);
+        list.hidden = false;
+        return;
+      }
+
+      items.forEach(function (item, index) {
+        var option = document.createElement('button');
+        option.type = 'button';
+        option.className = 'combo-option';
+        option.setAttribute('data-index', String(index));
+
+        var head = document.createElement('span');
+        head.className = 'combo-option-head';
+
+        var title = document.createElement('span');
+        title.className = 'combo-option-title';
+        title.textContent = item.description;
+
+        var price = document.createElement('span');
+        price.className = 'combo-option-price';
+        price.textContent = item.price_label;
+
+        head.appendChild(title);
+        head.appendChild(price);
+
+        var meta = document.createElement('span');
+        meta.className = 'combo-option-meta';
+        meta.textContent = [item.uid, item.brand, item.sku].filter(Boolean).join(' · ');
+
+        option.appendChild(head);
+        option.appendChild(meta);
+
+        option.addEventListener('mousedown', function (event) {
+          // Evita que el input pierda el foco antes del click.
+          event.preventDefault();
+        });
+        option.addEventListener('click', function (event) {
+          event.preventDefault();
+          pick(item);
+        });
+
+        list.appendChild(option);
+      });
+
+      list.hidden = false;
+    }
+
+    function search(term) {
+      if (controller) controller.abort();
+      controller = window.AbortController ? new AbortController() : null;
+
+      var options = { headers: { Accept: 'application/json' } };
+      if (controller) options.signal = controller.signal;
+
+      fetch(endpoint + '?q=' + encodeURIComponent(term), options)
+        .then(function (response) {
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          return response.json();
+        })
+        .then(function (data) { render(data.items || []); })
+        .catch(function (error) {
+          if (error && error.name === 'AbortError') return;
+          list.innerHTML = '<div class="combo-empty">No se pudo buscar. Reintentá.</div>';
+          list.hidden = false;
+        });
+    }
+
+    function scheduleSearch() {
+      clearTimeout(timer);
+      timer = setTimeout(function () { search(input.value.trim()); }, 200);
+    }
+
+    input.addEventListener('input', function () {
+      hidden.value = '';
+      scheduleSearch();
+    });
+    input.addEventListener('focus', function () {
+      clearTimeout(timer);
+      search(input.value.trim());
+    });
+    input.addEventListener('blur', function () {
+      setTimeout(closeList, 150);
+    });
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowDown') {
+        if (list.hidden) { search(input.value.trim()); return; }
+        event.preventDefault();
+        highlight(activeIndex + 1);
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        highlight(activeIndex - 1);
+      } else if (event.key === 'Enter') {
+        if (!list.hidden && items.length) {
+          event.preventDefault();
+          pick(items[activeIndex >= 0 ? activeIndex : 0]);
+        }
+      } else if (event.key === 'Escape') {
+        closeList();
+      }
+    });
+
+    var form = input.closest('form');
+    if (form) {
+      form.addEventListener('reset', function () {
+        hidden.value = '';
+        closeList();
+      });
+    }
+  });
 
   var board = document.querySelector('[data-board]');
   if (board) {

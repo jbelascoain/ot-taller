@@ -53,6 +53,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->post('motorcycles/(:num)/delete', 'Motorcycles::delete/$1');
 
     $routes->get('parts', 'Parts::index');
+    $routes->get('parts/search', 'Parts::search');
     $routes->get('parts/new', 'Parts::new');
     $routes->post('parts', 'Parts::create');
     $routes->get('parts/(:num)/edit', 'Parts::edit/$1');

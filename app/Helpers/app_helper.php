@@ -23,6 +23,21 @@ if (! function_exists('setting')) {
     }
 }
 
+if (! function_exists('asset_url')) {
+    /**
+     * URL de un asset con versión basada en su fecha de modificación, para que
+     * el navegador no siga usando un app.js/app.css viejo después de actualizar.
+     */
+    function asset_url(string $path): string
+    {
+        $path = ltrim($path, '/');
+        $file = FCPATH . $path;
+        $version = is_file($file) ? filemtime($file) : false;
+
+        return base_url($path) . ($version ? '?v=' . $version : '');
+    }
+}
+
 if (! function_exists('money')) {
     function money($value): string
     {

@@ -20,7 +20,7 @@
     <?php else: ?>
         <link rel="icon" type="image/svg+xml" href="<?= base_url('favicon.svg') ?>">
     <?php endif; ?>
-    <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('assets/app.css') ?>">
 </head>
 <body>
 <div class="center-page">

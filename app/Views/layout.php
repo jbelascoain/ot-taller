@@ -26,7 +26,7 @@ $is = static fn (string $prefix): bool => $path === $prefix || str_starts_with($
     <?php else: ?>
         <link rel="icon" type="image/svg+xml" href="<?= base_url('favicon.svg') ?>">
     <?php endif; ?>
-    <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('assets/app.css') ?>">
 </head>
 <body>
 <header class="topbar">
@@ -71,6 +71,6 @@ $is = static fn (string $prefix): bool => $path === $prefix || str_starts_with($
     <?php endif; ?>
     <?= $this->renderSection('content') ?>
 </main>
-<script src="<?= base_url('assets/app.js') ?>"></script>
+<script src="<?= asset_url('assets/app.js') ?>"></script>
 </body>
 </html>

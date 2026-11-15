@@ -228,6 +228,8 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 
 @media (max-width: 900px) {
   .grid-2, .grid-3, .grid-side { grid-template-columns: 1fr; }
+  .grid-side > .totals-card { order: 2; }
+  .grid-side > #items { order: 1; }
   .form-grid { grid-template-columns: 1fr; }
   .form-grid .span-2 { grid-column: auto; }
   .nav-toggle { display: inline-flex; }

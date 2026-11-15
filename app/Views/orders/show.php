@@ -92,7 +92,7 @@
 </div>
 
 <div class="grid grid-side">
-    <div class="card">
+    <div class="card totals-card">
         <div class="card-head"><span class="card-title">Totales</span></div>
         <div class="card-body">
             <div class="totals">

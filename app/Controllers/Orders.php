@@ -54,7 +54,16 @@ class Orders extends BaseController
     public function index()
     {
         $term   = trim((string) $this->request->getGet('q'));
+        $status = (string) $this->request->getGet('status');
         $orders = (new WorkOrderModel())->withDetails();
+
+        if (! in_array($status, WorkOrderModel::STATUSES, true)) {
+            $status = '';
+        }
+
+        if ($status !== '') {
+            $orders = array_values(array_filter($orders, static fn (array $order): bool => $order['status'] === $status));
+        }
 
         if ($term !== '') {
             $needle = mb_strtolower($term);
@@ -72,9 +81,11 @@ class Orders extends BaseController
         }
 
         return view('orders/index', [
-            'title'  => 'Órdenes',
-            'orders' => $orders,
-            'term'   => $term,
+            'title'    => 'Órdenes',
+            'orders'   => $orders,
+            'term'     => $term,
+            'status'   => $status,
+            'statuses' => WorkOrderModel::STATUSES,
         ]);
     }
 

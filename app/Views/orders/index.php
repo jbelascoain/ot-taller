@@ -12,8 +12,14 @@
 
 <form method="get" action="<?= base_url('orders') ?>" class="actions mb-2">
     <input type="text" name="q" value="<?= esc($term) ?>" placeholder="Buscar por OT, cliente, moto o patente" style="max-width:360px">
+    <select name="status" style="max-width:220px" data-auto-submit aria-label="Filtrar por estado">
+        <option value="">Todos los estados</option>
+        <?php foreach ($statuses as $statusOption): ?>
+            <option value="<?= esc($statusOption) ?>" <?= $statusOption === $status ? 'selected' : '' ?>><?= esc(estado_label($statusOption)) ?></option>
+        <?php endforeach; ?>
+    </select>
     <button class="btn" type="submit">Buscar</button>
-    <?php if ($term !== ''): ?><a class="btn btn-ghost" href="<?= base_url('orders') ?>">Limpiar</a><?php endif; ?>
+    <?php if ($term !== '' || $status !== ''): ?><a class="btn btn-ghost" href="<?= base_url('orders') ?>">Limpiar</a><?php endif; ?>
 </form>
 
 <div class="card">
@@ -30,7 +36,7 @@
             </thead>
             <tbody>
                 <?php if (count($orders) === 0): ?>
-                    <tr><td colspan="5" class="empty">No hay órdenes todavía.</td></tr>
+                    <tr><td colspan="5" class="empty"><?= $term !== '' || $status !== '' ? 'No hay órdenes con ese filtro.' : 'No hay órdenes todavía.' ?></td></tr>
                 <?php endif; ?>
                 <?php foreach ($orders as $order): ?>
                     <?php $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?? '']))); ?>

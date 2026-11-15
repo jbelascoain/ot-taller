@@ -246,6 +246,37 @@
     }
   });
 
+  // Modal para editar un repuesto (ítem) de la orden.
+  var itemModal = document.getElementById('item-edit-modal');
+  if (itemModal && typeof itemModal.showModal === 'function') {
+    var itemForm = itemModal.querySelector('form');
+    var itemFields = {
+      description: document.getElementById('edit_item_description'),
+      quantity: document.getElementById('edit_item_quantity'),
+      price: document.getElementById('edit_item_price'),
+      status: document.getElementById('edit_item_status')
+    };
+
+    document.querySelectorAll('[data-item-edit]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        itemForm.action = button.getAttribute('data-action') || '';
+        itemFields.description.value = button.getAttribute('data-description') || '';
+        itemFields.quantity.value = button.getAttribute('data-quantity') || '1';
+        itemFields.price.value = button.getAttribute('data-price') || '';
+        itemFields.status.value = button.getAttribute('data-status') || '';
+        itemModal.showModal();
+      });
+    });
+
+    itemModal.querySelectorAll('[data-close-modal]').forEach(function (button) {
+      button.addEventListener('click', function () { itemModal.close(); });
+    });
+
+    itemModal.addEventListener('click', function (event) {
+      if (event.target === itemModal) itemModal.close();
+    });
+  }
+
   var board = document.querySelector('[data-board]');
   if (board) {
     var dragged = null;

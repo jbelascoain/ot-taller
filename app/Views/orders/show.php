@@ -146,6 +146,15 @@
                                                 </button>
                                             <?php endforeach; ?>
                                         </form>
+                                        <button type="button" class="btn btn-sm btn-icon" title="Editar repuesto" aria-label="Editar repuesto"
+                                            data-item-edit
+                                            data-action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/update') ?>"
+                                            data-description="<?= esc($item['description'], 'attr') ?>"
+                                            data-quantity="<?= (int) $item['quantity'] ?>"
+                                            data-price="<?= esc((string) $item['unit_price'], 'attr') ?>"
+                                            data-status="<?= esc($item['status'], 'attr') ?>">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                                        </button>
                                         <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/delete') ?>">
                                             <?= csrf_field() ?>
                                             <button class="btn btn-sm btn-danger" type="submit" data-confirm="¿Eliminar este ítem?">×</button>
@@ -247,4 +256,42 @@
         </div>
     </div>
 </div>
+
+<dialog class="modal" id="item-edit-modal">
+    <form method="post" action="">
+        <?= csrf_field() ?>
+        <div class="modal-head">
+            <strong>Editar repuesto</strong>
+            <button type="button" class="btn btn-sm" data-close-modal aria-label="Cerrar">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-grid">
+                <div class="field span-2">
+                    <label for="edit_item_description">Descripción</label>
+                    <input type="text" id="edit_item_description" name="description" required maxlength="200">
+                </div>
+                <div class="field">
+                    <label for="edit_item_quantity">Cantidad</label>
+                    <input type="number" id="edit_item_quantity" name="quantity" min="1" required>
+                </div>
+                <div class="field">
+                    <label for="edit_item_price">Precio unitario</label>
+                    <input type="number" step="0.01" id="edit_item_price" name="unit_price" min="0">
+                </div>
+                <div class="field span-2">
+                    <label for="edit_item_status">Estado</label>
+                    <select id="edit_item_status" name="status">
+                        <?php foreach ($itemStatuses as $status): ?>
+                            <option value="<?= esc($status) ?>"><?= esc(item_estado_label($status)) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn" data-close-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</dialog>
 <?= $this->endSection() ?>

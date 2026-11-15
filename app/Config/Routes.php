@@ -32,6 +32,7 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
     $routes->post('orders/(:num)/status', 'Orders::status/$1');
     $routes->post('orders/(:num)/items', 'Orders::addItem/$1');
     $routes->post('orders/(:num)/items/(:num)/status', 'Orders::itemStatus/$1/$2');
+    $routes->post('orders/(:num)/items/(:num)/update', 'Orders::updateItem/$1/$2');
     $routes->post('orders/(:num)/items/(:num)/delete', 'Orders::deleteItem/$1/$2');
     $routes->get('orders/(:num)/pdf', 'Orders::pdf/$1');
     $routes->get('orders/(:num)/whatsapp', 'Orders::whatsapp/$1');

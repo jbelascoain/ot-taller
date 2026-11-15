@@ -324,6 +324,48 @@ class Orders extends BaseController
         return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Ítem actualizado.');
     }
 
+    public function updateItem(int $orderId, int $itemId)
+    {
+        $item = (new OrderItemModel())
+            ->where('id', $itemId)
+            ->where('order_id', $orderId)
+            ->first();
+
+        if (! $item) {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'Ítem no encontrado.');
+        }
+
+        $description = trim((string) $this->request->getPost('description'));
+        $quantity    = max(1, (int) $this->request->getPost('quantity'));
+        $price       = $this->numberOrNull($this->request->getPost('unit_price')) ?? 0.0;
+        $status      = (string) $this->request->getPost('status');
+
+        if ($description === '') {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'La descripción es obligatoria.');
+        }
+
+        if (mb_strlen($description) > 200) {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'La descripción no puede superar los 200 caracteres.');
+        }
+
+        if ($price < 0) {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'El precio unitario no puede ser negativo.');
+        }
+
+        if (! in_array($status, OrderItemModel::STATUSES, true)) {
+            $status = $item['status'];
+        }
+
+        (new OrderItemModel())->update($itemId, [
+            'description' => $description,
+            'quantity'    => $quantity,
+            'unit_price'  => $price,
+            'status'      => $status,
+        ]);
+
+        return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Repuesto actualizado.');
+    }
+
     public function deleteItem(int $orderId, int $itemId)
     {
         (new OrderItemModel())

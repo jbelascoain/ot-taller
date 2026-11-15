@@ -150,6 +150,14 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .w-full { width: 100%; }
 .hidden { display: none !important; }
 .scroll-anchor { scroll-margin-top: 84px; }
+.btn-icon { padding: .3rem .45rem; }
+.btn-icon svg { display: block; }
+.modal { border: 0; border-radius: 14px; padding: 0; width: min(480px, calc(100vw - 2rem)); max-height: calc(100vh - 2rem); overflow: auto; background: var(--surface); color: var(--text); box-shadow: 0 24px 60px rgba(15, 23, 42, .35); }
+.modal::backdrop { background: rgba(15, 23, 42, .45); }
+.modal-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1rem .25rem; }
+.modal-head strong { font-size: 1rem; }
+.modal-body { padding: .5rem 1rem 0; }
+.modal-actions { display: flex; justify-content: flex-end; gap: .5rem; padding: .5rem 1rem 1rem; }
 .center-page { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; }
 .auth-card { width: 100%; max-width: 420px; }
 .auth-card .card-body { padding: 1.5rem; }

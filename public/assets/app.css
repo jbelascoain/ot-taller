@@ -33,10 +33,10 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 1rem 0; }
 .brand:hover { text-decoration: none; }
 .brand img { height: 64px; width: auto; max-width: 220px; object-fit: contain; }
 .brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--brand-bg); color: var(--brand-fg); font-size: .8rem; }
-.nav { display: flex; align-items: center; gap: .25rem; flex-wrap: wrap; }
-.nav a { color: var(--muted); padding: .4rem .6rem; border-radius: 8px; font-size: .9rem; }
-.nav a:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
-.nav a.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.nav { display: flex; align-items: center; gap: .25rem; flex-wrap: wrap; flex: 1; }
+.nav > a { color: var(--muted); padding: .4rem .6rem; border-radius: 8px; font-size: .9rem; }
+.nav > a:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
+.nav > a.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
 .user-menu { margin-left: auto; display: flex; align-items: center; gap: .75rem; font-size: .88rem; color: var(--muted); }
 .theme-toggle { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; padding: 0; }
 .theme-toggle:hover { background: var(--surface-2); color: var(--text); }
@@ -239,9 +239,9 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
   .form-grid { grid-template-columns: 1fr; }
   .form-grid .span-2 { grid-column: auto; }
   .nav-toggle { display: inline-flex; }
-  .nav { display: none; width: 100%; flex-direction: column; align-items: stretch; padding-top: .5rem; }
+  .nav { display: none; width: 100%; flex: 1 0 100%; flex-direction: column; align-items: stretch; padding-top: .5rem; }
   .nav.open { display: flex; }
-  .user-menu { width: 100%; justify-content: space-between; padding-top: .5rem; border-top: 1px solid var(--border); }
+  .user-menu { width: 100%; justify-content: space-between; padding-top: .5rem; border-top: 1px solid var(--border); margin-top: .25rem; }
   .topbar-inner { flex-wrap: wrap; }
   .board { scroll-snap-type: x mandatory; }
   .column { min-width: 82vw; flex: 0 0 82vw; scroll-snap-align: start; }

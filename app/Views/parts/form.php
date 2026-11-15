@@ -13,12 +13,12 @@
             <input type="text" id="description" name="description" value="<?= esc(old('description', $part['description'] ?? '')) ?>" required>
         </div>
         <div class="field">
-            <label for="sku">Modelo</label>
-            <input type="text" id="sku" name="sku" value="<?= esc(old('sku', $part['sku'] ?? '')) ?>">
-        </div>
-        <div class="field">
             <label for="brand">Marca</label>
             <input type="text" id="brand" name="brand" value="<?= esc(old('brand', $part['brand'] ?? '')) ?>">
+        </div>
+        <div class="field">
+            <label for="sku">Modelo</label>
+            <input type="text" id="sku" name="sku" value="<?= esc(old('sku', $part['sku'] ?? '')) ?>">
         </div>
         <div class="field">
             <label for="purchase_price">Precio de compra</label>

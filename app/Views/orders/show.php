@@ -286,12 +286,12 @@
                     <input type="text" id="edit_item_description" name="description" required maxlength="200">
                 </div>
                 <div class="field">
-                    <label for="edit_item_sku">Modelo</label>
-                    <input type="text" id="edit_item_sku" name="sku" maxlength="80">
-                </div>
-                <div class="field">
                     <label for="edit_item_brand">Marca</label>
                     <input type="text" id="edit_item_brand" name="brand" maxlength="80">
+                </div>
+                <div class="field">
+                    <label for="edit_item_sku">Modelo</label>
+                    <input type="text" id="edit_item_sku" name="sku" maxlength="80">
                 </div>
                 <div class="field">
                     <label for="edit_item_purchase_price">Precio de compra</label>

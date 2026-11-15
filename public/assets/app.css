@@ -75,7 +75,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 1rem 0; }
 .stat .lbl { color: var(--muted); font-size: .8rem; }
 .field { display: flex; flex-direction: column; gap: .3rem; margin-bottom: .8rem; }
 .field > label { font-size: .82rem; font-weight: 600; color: #374151; }
-input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], input[type="tel"], select, textarea { width: 100%; padding: .5rem .65rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; color: var(--text); }
+input[type="text"], input[type="search"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], input[type="tel"], select, textarea { width: 100%; padding: .5rem .65rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font: inherit; color: var(--text); }
 input:focus, select:focus, textarea:focus { outline: 2px solid #c7dafc; border-color: var(--primary); }
 textarea { min-height: 80px; resize: vertical; }
 .form-grid { display: grid; gap: 0 .9rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -120,7 +120,8 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 [data-theme="dark"] .alert.error { background: #2a1515; border-color: #6b2a2a; color: #ff9b9b; }
 .board { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: 1rem; align-items: flex-start; }
 .board-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
-.board-search { flex: 1 1 260px; max-width: 420px; }
+.board-tools [data-board-search-status]:empty { display: none; }
+.board-search { flex: 1 1 260px; max-width: 360px; }
 .column { min-width: 200px; flex: 1 1 200px; background: var(--column); border-radius: var(--radius); padding: .5rem; min-height: 220px; }
 .column-head { display: flex; align-items: center; justify-content: space-between; padding: .35rem .4rem .55rem; font-size: .8rem; font-weight: 700; }
 .column-head .count { color: var(--muted); font-weight: 600; }

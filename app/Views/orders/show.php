@@ -118,13 +118,12 @@
                             <th class="num">Cant.</th>
                             <th class="num">P. unitario</th>
                             <th class="num">Subtotal</th>
-                            <th>Estado</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (count($items) === 0): ?>
-                            <tr><td colspan="6" class="empty">Todavía no hay ítems.</td></tr>
+                            <tr><td colspan="5" class="empty">Todavía no hay ítems.</td></tr>
                         <?php endif; ?>
                         <?php foreach ($items as $item): ?>
                             <?php $subtotal = (float) $item['unit_price'] * (int) $item['quantity']; ?>
@@ -133,9 +132,6 @@
                                 <td class="num" data-label="Cantidad"><?= (int) $item['quantity'] ?></td>
                                 <td class="num" data-label="P. unitario"><?= esc(money($item['unit_price'])) ?></td>
                                 <td class="num" data-label="Subtotal"><?= esc(money($subtotal)) ?></td>
-                                <td data-label="Estado">
-                                    <span class="badge <?= esc(item_estado_class($item['status'])) ?>"><?= esc(item_estado_label($item['status'])) ?></span>
-                                </td>
                                 <td class="cell-actions" data-label="Acciones">
                                     <div class="flex gap wrap">
                                         <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/status') ?>" class="flex gap wrap">

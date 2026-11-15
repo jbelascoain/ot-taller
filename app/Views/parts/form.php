@@ -13,7 +13,7 @@
             <input type="text" id="description" name="description" value="<?= esc(old('description', $part['description'] ?? '')) ?>" required>
         </div>
         <div class="field">
-            <label for="sku">SKU</label>
+            <label for="sku">Modelo</label>
             <input type="text" id="sku" name="sku" value="<?= esc(old('sku', $part['sku'] ?? '')) ?>">
         </div>
         <div class="field">

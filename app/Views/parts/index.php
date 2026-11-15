@@ -5,14 +5,14 @@
     <a class="btn btn-primary" href="<?= base_url('parts/new') ?>">+ Nuevo repuesto</a>
 </div>
 <form method="get" action="<?= base_url('parts') ?>" class="actions mb-2">
-    <input type="text" name="q" value="<?= esc($term) ?>" placeholder="Buscar por descripción, SKU, marca o proveedor" style="max-width:400px">
+    <input type="text" name="q" value="<?= esc($term) ?>" placeholder="Buscar por descripción, modelo, marca o proveedor" style="max-width:400px">
     <button class="btn" type="submit">Buscar</button>
     <?php if ($term !== ''): ?><a class="btn btn-ghost" href="<?= base_url('parts') ?>">Limpiar</a><?php endif; ?>
 </form>
 <div class="card">
     <div class="table-wrap">
         <table class="table">
-            <thead><tr><th>UID</th><th>Descripción</th><th>Marca / SKU</th><th class="num">Compra</th><th class="num">Venta</th><th>Stock</th><th>Estado</th><th></th></tr></thead>
+            <thead><tr><th>UID</th><th>Descripción</th><th>Marca / Modelo</th><th class="num">Compra</th><th class="num">Venta</th><th>Stock</th><th>Estado</th><th></th></tr></thead>
             <tbody>
                 <?php if (count($parts) === 0): ?>
                     <tr><td colspan="8" class="empty">No hay repuestos todavía.</td></tr>
@@ -22,7 +22,7 @@
                     <tr>
                         <td data-label="UID"><?= esc(uid('REP', $part['id'])) ?></td>
                         <td data-label="Descripción"><strong><?= esc($part['description']) ?></strong><div class="muted text-xs"><?= esc($part['supplier_name'] ?: 'Sin proveedor') ?></div></td>
-                        <td data-label="Marca / SKU"><?= esc(trim(($part['brand'] ?? '') . ' ' . ($part['sku'] ?? '')) ?: '—') ?></td>
+                        <td data-label="Marca / Modelo"><?= esc(trim(($part['brand'] ?? '') . ' ' . ($part['sku'] ?? '')) ?: '—') ?></td>
                         <td class="num" data-label="Compra"><?= esc(money($part['purchase_price'])) ?></td>
                         <td class="num" data-label="Venta"><?= esc(money($part['sale_price'])) ?></td>
                         <td data-label="Stock"><span class="badge <?= $low ? 'rechazado' : 'aprobado' ?>"><?= (int) $part['stock'] ?></span></td>

@@ -335,10 +335,22 @@ class Orders extends BaseController
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'Ítem no encontrado.');
         }
 
+        $part = ! empty($item['part_id']) ? (new PartModel())->find((int) $item['part_id']) : null;
+
         $description = trim((string) $this->request->getPost('description'));
         $quantity    = max(1, (int) $this->request->getPost('quantity'));
         $price       = $this->numberOrNull($this->request->getPost('unit_price')) ?? 0.0;
         $status      = (string) $this->request->getPost('status');
+
+        $sku           = trim((string) $this->request->getPost('sku'));
+        $brand         = trim((string) $this->request->getPost('brand'));
+        $purchasePrice = $this->numberOrNull($this->request->getPost('purchase_price')) ?? 0.0;
+        $salePrice     = $this->numberOrNull($this->request->getPost('sale_price')) ?? 0.0;
+        $stock         = max(0, (int) $this->request->getPost('stock'));
+        $minStock      = max(0, (int) $this->request->getPost('min_stock'));
+        $supplierId    = (int) ($this->request->getPost('supplier_id') ?? 0);
+        $active        = $this->request->getPost('active') === '1' ? 1 : 0;
+        $notes         = trim((string) $this->request->getPost('notes'));
 
         if ($description === '') {
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'La descripción es obligatoria.');
@@ -348,20 +360,58 @@ class Orders extends BaseController
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'La descripción no puede superar los 200 caracteres.');
         }
 
-        if ($price < 0) {
-            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'El precio unitario no puede ser negativo.');
+        if (mb_strlen($sku) > 80) {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'El modelo no puede superar los 80 caracteres.');
+        }
+
+        if (mb_strlen($brand) > 80) {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'La marca no puede superar los 80 caracteres.');
+        }
+
+        if ($price < 0 || $purchasePrice < 0 || $salePrice < 0) {
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'Los precios no pueden ser negativos.');
+        }
+
+        if ($supplierId > 0 && ! (new SupplierModel())->find($supplierId)) {
+            $supplierId = 0;
         }
 
         if (! in_array($status, OrderItemModel::STATUSES, true)) {
             $status = $item['status'];
         }
 
-        (new OrderItemModel())->update($itemId, [
-            'description' => $description,
-            'quantity'    => $quantity,
-            'unit_price'  => $price,
-            'status'      => $status,
-        ]);
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            (new OrderItemModel())->update($itemId, [
+                'description' => $description,
+                'quantity'    => $quantity,
+                'unit_price'  => $price,
+                'status'      => $status,
+            ]);
+
+            if ($part) {
+                (new PartModel())->update((int) $part['id'], [
+                    'description'    => $description,
+                    'sku'            => $sku,
+                    'brand'          => $brand,
+                    'purchase_price' => $purchasePrice,
+                    'sale_price'     => $salePrice,
+                    'stock'          => $stock,
+                    'min_stock'      => $minStock,
+                    'supplier_id'    => $supplierId ?: null,
+                    'active'         => $active,
+                    'notes'          => $notes,
+                ]);
+            }
+
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'No se pudo guardar el repuesto.');
+        }
 
         return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Repuesto actualizado.');
     }

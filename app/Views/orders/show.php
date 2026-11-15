@@ -146,13 +146,27 @@
                                                 </button>
                                             <?php endforeach; ?>
                                         </form>
+                                        <?php
+                                        $editData = [
+                                            'action'         => base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/update'),
+                                            'description'    => $item['description'],
+                                            'quantity'       => (int) $item['quantity'],
+                                            'unit_price'     => (string) $item['unit_price'],
+                                            'status'         => $item['status'],
+                                            'sku'            => (string) ($item['part_sku'] ?? ''),
+                                            'brand'          => (string) ($item['part_brand'] ?? ''),
+                                            'purchase_price' => (string) ($item['part_purchase_price'] ?? '0'),
+                                            'sale_price'     => (string) ($item['part_sale_price'] ?? '0'),
+                                            'stock'          => (int) ($item['part_stock'] ?? 0),
+                                            'min_stock'      => (int) ($item['part_min_stock'] ?? 0),
+                                            'supplier_id'    => (int) ($item['part_supplier_id'] ?? 0),
+                                            'active'         => (int) ($item['part_active'] ?? 0),
+                                            'notes'          => (string) ($item['part_notes'] ?? ''),
+                                        ];
+                                        ?>
                                         <button type="button" class="btn btn-sm btn-icon" title="Editar repuesto" aria-label="Editar repuesto"
                                             data-item-edit
-                                            data-action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/update') ?>"
-                                            data-description="<?= esc($item['description'], 'attr') ?>"
-                                            data-quantity="<?= (int) $item['quantity'] ?>"
-                                            data-price="<?= esc((string) $item['unit_price'], 'attr') ?>"
-                                            data-status="<?= esc($item['status'], 'attr') ?>">
+                                            data-item="<?= esc(json_encode($editData, JSON_UNESCAPED_UNICODE), 'attr') ?>">
                                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                                         </button>
                                         <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items/' . $item['id'] . '/delete') ?>">
@@ -180,7 +194,7 @@
                             <label for="part_search">Repuesto</label>
                             <div class="combo" data-combo data-endpoint="<?= base_url('parts/search') ?>" data-price-target="#unit_price">
                                 <input type="hidden" id="part_id" name="part_id" data-combo-value>
-                                <input type="text" id="part_search" class="combo-input" placeholder="Buscar por descripción, marca, SKU o código…" autocomplete="off" data-combo-input>
+                                <input type="text" id="part_search" class="combo-input" placeholder="Buscar por descripción, marca, modelo o código…" autocomplete="off" data-combo-input>
                                 <div class="combo-list" data-combo-list hidden></div>
                             </div>
                         </div>
@@ -265,11 +279,59 @@
             <button type="button" class="btn btn-sm" data-close-modal aria-label="Cerrar">×</button>
         </div>
         <div class="modal-body">
+            <div class="modal-section">Repuesto</div>
             <div class="form-grid">
                 <div class="field span-2">
                     <label for="edit_item_description">Descripción</label>
                     <input type="text" id="edit_item_description" name="description" required maxlength="200">
                 </div>
+                <div class="field">
+                    <label for="edit_item_sku">Modelo</label>
+                    <input type="text" id="edit_item_sku" name="sku" maxlength="80">
+                </div>
+                <div class="field">
+                    <label for="edit_item_brand">Marca</label>
+                    <input type="text" id="edit_item_brand" name="brand" maxlength="80">
+                </div>
+                <div class="field">
+                    <label for="edit_item_purchase_price">Precio de compra</label>
+                    <input type="number" step="0.01" id="edit_item_purchase_price" name="purchase_price" min="0">
+                </div>
+                <div class="field">
+                    <label for="edit_item_sale_price">Precio de venta</label>
+                    <input type="number" step="0.01" id="edit_item_sale_price" name="sale_price" min="0">
+                </div>
+                <div class="field">
+                    <label for="edit_item_stock">Stock</label>
+                    <input type="number" id="edit_item_stock" name="stock" min="0">
+                </div>
+                <div class="field">
+                    <label for="edit_item_min_stock">Stock mínimo</label>
+                    <input type="number" id="edit_item_min_stock" name="min_stock" min="0">
+                </div>
+                <div class="field">
+                    <label for="edit_item_supplier">Proveedor</label>
+                    <select id="edit_item_supplier" name="supplier_id">
+                        <option value="">Sin proveedor</option>
+                        <?php foreach ($suppliers as $supplier): ?>
+                            <option value="<?= (int) $supplier['id'] ?>"><?= esc($supplier['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="field" style="justify-content:flex-end">
+                    <label class="check">
+                        <input type="checkbox" id="edit_item_active" name="active" value="1">
+                        Activo
+                    </label>
+                </div>
+                <div class="field span-2">
+                    <label for="edit_item_notes">Notas</label>
+                    <textarea id="edit_item_notes" name="notes"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-section">En esta orden</div>
+            <div class="form-grid">
                 <div class="field">
                     <label for="edit_item_quantity">Cantidad</label>
                     <input type="number" id="edit_item_quantity" name="quantity" min="1" required>

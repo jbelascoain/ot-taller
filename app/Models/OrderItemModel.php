@@ -18,7 +18,7 @@ class OrderItemModel extends Model
 
     public function forOrder(int $orderId): array
     {
-        return $this->select('order_items.*, parts.id AS catalog_id')
+        return $this->select('order_items.*, parts.id AS catalog_id, parts.description AS part_description, parts.sku AS part_sku, parts.brand AS part_brand, parts.purchase_price AS part_purchase_price, parts.sale_price AS part_sale_price, parts.stock AS part_stock, parts.min_stock AS part_min_stock, parts.supplier_id AS part_supplier_id, parts.active AS part_active, parts.notes AS part_notes')
             ->join('parts', 'parts.id = order_items.part_id', 'left')
             ->where('order_id', $orderId)
             ->orderBy('order_items.id', 'ASC')

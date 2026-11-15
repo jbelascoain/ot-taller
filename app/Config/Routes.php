@@ -6,6 +6,11 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('health', 'Health::index');
 
+$routes->get('favicon.ico', 'Media::favicon/32');
+$routes->get('favicon-32.png', 'Media::favicon/32');
+$routes->get('favicon-16.png', 'Media::favicon/16');
+$routes->get('apple-touch-icon.png', 'Media::favicon/180');
+
 $routes->get('setup', 'Setup::index');
 $routes->post('setup', 'Setup::create');
 

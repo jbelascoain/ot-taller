@@ -7,6 +7,18 @@
     <script>
         try { if (localStorage.getItem('ot-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
     </script>
+    <?php
+    $faviconLogo = setting('logo_path');
+    $faviconFile = $faviconLogo !== '' ? FCPATH . 'uploads/' . $faviconLogo : '';
+    $faviconVersion = ($faviconFile !== '' && is_file($faviconFile)) ? filemtime($faviconFile) : '';
+    ?>
+    <?php if ($faviconVersion !== ''): ?>
+        <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('favicon-32.png?v=' . $faviconVersion) ?>">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('favicon-16.png?v=' . $faviconVersion) ?>">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?= base_url('apple-touch-icon.png?v=' . $faviconVersion) ?>">
+    <?php else: ?>
+        <link rel="icon" type="image/svg+xml" href="<?= base_url('favicon.svg') ?>">
+    <?php endif; ?>
     <link rel="stylesheet" href="<?= base_url('assets/app.css') ?>">
 </head>
 <body>

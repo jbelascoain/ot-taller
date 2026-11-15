@@ -64,6 +64,17 @@
   });
   toggleInputs.forEach(syncToggle);
 
+  // El estado por defecto del ítem depende del modo elegido: un repuesto nuevo
+  // todavía está "Presupuestar"; uno del catálogo ya queda "Presupuestado".
+  var itemStatusSelect = document.getElementById('item_status');
+  if (itemStatusSelect) {
+    document.querySelectorAll('[data-item-status]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        if (radio.checked) itemStatusSelect.value = radio.getAttribute('data-item-status');
+      });
+    });
+  }
+
   // Selects que se envían solos (por ejemplo el estado de la orden).
   document.querySelectorAll('[data-auto-submit]').forEach(function (el) {
     el.addEventListener('change', function () {

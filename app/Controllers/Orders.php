@@ -226,7 +226,9 @@ class Orders extends BaseController
         $quantity = max(1, (int) $this->request->getPost('quantity'));
         $price    = $this->numberOrNull($this->request->getPost('unit_price'));
         $status   = (string) $this->request->getPost('item_status');
-        $status   = in_array($status, OrderItemModel::STATUSES, true) ? $status : OrderItemModel::DEFAULT_STATUS;
+        if (! in_array($status, OrderItemModel::STATUSES, true)) {
+            $status = $mode === 'new' ? 'PRESUPUESTAR' : OrderItemModel::DEFAULT_STATUS;
+        }
 
         $db = db_connect();
         $db->transBegin();
@@ -234,6 +236,10 @@ class Orders extends BaseController
         try {
             $partId     = null;
             $description = '';
+
+            if ($price !== null && $price < 0) {
+                throw new \RuntimeException('El precio unitario no puede ser negativo.');
+            }
 
             if ($mode === 'catalog') {
                 $partId = (int) $this->request->getPost('part_id');
@@ -271,7 +277,7 @@ class Orders extends BaseController
                     'sku'            => '',
                     'brand'          => '',
                     'purchase_price' => $this->numberOrNull($this->request->getPost('purchase_price')) ?? 0,
-                    'sale_price'     => $price,
+                    'sale_price'     => $price ?? 0,
                     'stock'          => 0,
                     'min_stock'      => 0,
                     'supplier_id'    => $supplierId ?: null,
@@ -280,9 +286,7 @@ class Orders extends BaseController
                 ], true);
             }
 
-            if ($price === null || $price < 0) {
-                throw new \RuntimeException('El precio unitario debe ser un número.');
-            }
+            $price = $price ?? 0.0;
 
             (new OrderItemModel())->insert([
                 'order_id'    => $id,
@@ -295,11 +299,11 @@ class Orders extends BaseController
 
             $db->transCommit();
 
-            return redirect()->to('/orders/' . $id)->with('success', 'Ítem agregado.');
+            return redirect()->to('/orders/' . $id . '#add-item')->with('success', 'Ítem agregado.');
         } catch (\Throwable $e) {
             $db->transRollback();
 
-            return redirect()->back()->withInput()->with('error', $e->getMessage());
+            return redirect()->to('/orders/' . $id . '#add-item')->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -317,7 +321,7 @@ class Orders extends BaseController
             ->set(['status' => $status])
             ->update();
 
-        return redirect()->to('/orders/' . $orderId)->with('success', 'Ítem actualizado.');
+        return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Ítem actualizado.');
     }
 
     public function deleteItem(int $orderId, int $itemId)
@@ -327,7 +331,7 @@ class Orders extends BaseController
             ->where('order_id', $orderId)
             ->delete();
 
-        return redirect()->to('/orders/' . $orderId)->with('success', 'Ítem eliminado.');
+        return redirect()->to('/orders/' . $orderId . '#items')->with('success', 'Ítem eliminado.');
     }
 
     public function pdf(int $id)

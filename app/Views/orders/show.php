@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card scroll-anchor" id="items">
         <div class="card-head">
             <span class="card-title">Repuestos e ítems</span>
             <span class="muted text-xs"><?= count($items) ?> ítems</span>
@@ -158,11 +158,11 @@
                 </table>
             </div>
 
-            <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items') ?>" class="card card-pad" style="background:var(--surface-2)">
+            <form method="post" action="<?= base_url('orders/' . $order['id'] . '/items') ?>" class="card card-pad scroll-anchor" id="add-item" style="background:var(--surface-2)">
                 <?= csrf_field() ?>
                 <div class="radio-row">
-                    <label><input type="radio" name="mode" value="catalog" checked data-toggle-target="#catalog-fields"> Del catálogo</label>
-                    <label><input type="radio" name="mode" value="new" data-toggle-target="#new-item-fields"> Crear repuesto</label>
+                    <label><input type="radio" name="mode" value="catalog" checked data-toggle-target="#catalog-fields" data-item-status="PRESUPUESTADO"> Del catálogo</label>
+                    <label><input type="radio" name="mode" value="new" data-toggle-target="#new-item-fields" data-item-status="PRESUPUESTAR"> Crear repuesto</label>
                 </div>
 
                 <div id="catalog-fields">

@@ -33,6 +33,8 @@ zip -r ot-taller-release.zip . -x ".git/*" ".env" "writable/cache/*" "writable/l
    Si actualizás una instalación existente, ejecutá también
    `database/upgrades/2026-11-14-user-security.sql` y
    `database/upgrades/2026-11-15-delivery-dates.sql`.
+   Para los mensajes de WhatsApp por etapa, ejecutá también
+   `database/upgrades/2026-11-16-whatsapp-templates.sql`.
 
 ## 3. Subir archivos
 

@@ -145,17 +145,24 @@ if (! function_exists('wa_link')) {
 }
 
 if (! function_exists('whatsapp_message')) {
-    function whatsapp_message(array $order, string $moto): string
+    function whatsapp_message(array $order, string $moto, string $templateKey = 'whatsapp_template'): string
     {
-        $template = setting('whatsapp_template', 'Hola {cliente}, te envío el presupuesto de la orden {orden} ({moto}). Total: {total}.');
+        $defaults = [
+            'whatsapp_template'       => 'Hola {cliente}, te envío el presupuesto de la orden {orden} ({moto}). Total: {total}.',
+            'whatsapp_quote_template' => 'Hola {cliente}, el presupuesto de la orden {orden} ({moto}) está listo para aprobar. Total: {total}. Cualquier duda, respondé este mensaje.',
+            'whatsapp_ready_template' => 'Hola {cliente}, tu moto {moto} ya está lista para retirar. Te esperamos en {taller}. Orden {orden}.',
+        ];
+
+        $template = setting($templateKey, $defaults[$templateKey] ?? $defaults['whatsapp_template']);
 
         return str_replace(
-            ['{cliente}', '{orden}', '{moto}', '{total}'],
+            ['{cliente}', '{orden}', '{moto}', '{total}', '{taller}'],
             [
                 $order['customer_name'] ?? '',
                 uid('OT', $order['id']),
                 $moto,
                 money($order['total'] ?? 0),
+                setting('workshop_name', 'Taller'),
             ],
             $template
         );

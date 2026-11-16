@@ -12,6 +12,7 @@ class Settings extends BaseController
     private const KEYS = [
         'workshop_name', 'workshop_contact', 'currency_symbol',
         'locale', 'pdf_footer', 'whatsapp_template',
+        'whatsapp_quote_template', 'whatsapp_ready_template',
         'smtp_host', 'smtp_port', 'smtp_crypto', 'smtp_user',
         'smtp_from_email', 'smtp_from_name',
     ];

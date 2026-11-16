@@ -46,10 +46,29 @@
                 <input type="text" id="pdf_footer" name="pdf_footer" value="<?= esc($settings['pdf_footer'] ?? '') ?>">
                 <span class="help">Podés usar <code>{workshop}</code> para el nombre del taller.</span>
             </div>
-            <div class="field">
-                <label for="whatsapp_template">Plantilla de WhatsApp</label>
-                <textarea id="whatsapp_template" name="whatsapp_template"><?= esc($settings['whatsapp_template'] ?? '') ?></textarea>
-                <span class="help">Variables: <code>{cliente}</code>, <code>{orden}</code>, <code>{moto}</code>, <code>{total}</code>.</span>
+        </div>
+    </div>
+
+    <div class="card" style="grid-column:1/-1">
+        <div class="card-head"><span class="card-title">WhatsApp</span></div>
+        <div class="card-body">
+            <p class="muted text-sm mb-2">
+                Mensajes que se abren con WhatsApp desde la orden. Variables:
+                <code>{cliente}</code>, <code>{orden}</code>, <code>{moto}</code>, <code>{total}</code> y <code>{taller}</code>.
+            </p>
+            <div class="form-grid">
+                <div class="field span-2">
+                    <label for="whatsapp_template">Mensaje general</label>
+                    <textarea id="whatsapp_template" name="whatsapp_template"><?= esc($settings['whatsapp_template'] ?? '') ?></textarea>
+                </div>
+                <div class="field span-2">
+                    <label for="whatsapp_quote_template">Presupuesto listo para aprobar</label>
+                    <textarea id="whatsapp_quote_template" name="whatsapp_quote_template"><?= esc($settings['whatsapp_quote_template'] ?? '') ?></textarea>
+                </div>
+                <div class="field span-2">
+                    <label for="whatsapp_ready_template">Moto lista para retirar</label>
+                    <textarea id="whatsapp_ready_template" name="whatsapp_ready_template"><?= esc($settings['whatsapp_ready_template'] ?? '') ?></textarea>
+                </div>
             </div>
         </div>
     </div>

@@ -12,11 +12,32 @@
     <div class="actions">
         <a class="btn" href="<?= base_url('orders') ?>">Volver</a>
         <a class="btn" href="<?= base_url('orders/' . $order['id'] . '/pdf') ?>" target="_blank" rel="noreferrer">PDF</a>
-        <?php if ($whatsapp): ?>
+        <?php if ($whatsapp && ! $notifyStage): ?>
             <a class="btn" href="<?= esc($whatsapp) ?>" target="_blank" rel="noreferrer">WhatsApp</a>
         <?php endif; ?>
     </div>
 </div>
+
+<?php if ($notifyStage): ?>
+    <div class="alert notify mb-2">
+        <div>
+            <strong><?= $notifyStage === 'ready' ? 'La moto está lista para retirar.' : 'El presupuesto está listo para aprobar.' ?></strong>
+            <div class="text-sm">
+                <?= $notifyStage === 'ready'
+                    ? 'Avisá al cliente por WhatsApp que puede pasar a buscarla.'
+                    : 'Avisá al cliente por WhatsApp que puede revisar y aprobar el presupuesto.' ?>
+            </div>
+        </div>
+        <?php if ($notifyLink): ?>
+            <a class="btn btn-primary" href="<?= esc($notifyLink) ?>" target="_blank" rel="noreferrer">Avisar por WhatsApp</a>
+        <?php else: ?>
+            <div class="flex gap wrap center">
+                <span class="text-sm">El cliente no tiene teléfono cargado.</span>
+                <a class="btn" href="<?= base_url('customers/' . $order['customer_id'] . '/edit') ?>">Cargar teléfono</a>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
 
 <div class="grid grid-2 mb-2">
     <div class="card card-pad">

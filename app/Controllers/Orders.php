@@ -208,8 +208,14 @@ class Orders extends BaseController
         $items  = (new OrderItemModel())->forOrder($id);
         $totals = (new WorkOrderModel())->totals($id);
 
-        $moto = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?? ''])));
-        $message = whatsapp_message(array_merge($order, ['total' => $totals['total']]), $moto ?: uid('MOT', $order['motorcycle_id']));
+        $notifyStage = match ($order['status']) {
+            'PRESUPUESTADO' => 'quote',
+            'PARA_ENTREGAR' => 'ready',
+            default         => null,
+        };
+
+        $whatsapp   = $this->whatsappLink($order, (float) $totals['total']);
+        $notifyLink = $notifyStage !== null ? $this->whatsappLink($order, (float) $totals['total'], $notifyStage) : '';
 
         return view('orders/show', [
             'title'    => 'Orden ' . uid('OT', $id),
@@ -220,7 +226,9 @@ class Orders extends BaseController
             'statuses' => WorkOrderModel::STATUSES,
             'itemStatuses' => OrderItemModel::STATUSES,
             'defaultItemStatus' => OrderItemModel::DEFAULT_STATUS,
-            'whatsapp' => wa_link($order['customer_phone'] ?? '', $message),
+            'whatsapp' => $whatsapp,
+            'notifyStage' => $notifyStage,
+            'notifyLink' => $notifyLink,
         ]);
     }
 
@@ -549,13 +557,30 @@ class Orders extends BaseController
         }
 
         $totals = (new WorkOrderModel())->totals($id);
-        $moto   = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?? ''])));
-        $link   = wa_link($order['customer_phone'] ?? '', whatsapp_message(array_merge($order, ['total' => $totals['total']]), $moto));
+        $stage  = (string) $this->request->getGet('type');
+        $stage  = in_array($stage, ['quote', 'ready'], true) ? $stage : null;
+        $link   = $this->whatsappLink($order, (float) $totals['total'], $stage);
 
         if ($link === '') {
             return redirect()->to('/orders/' . $id)->with('error', 'El cliente no tiene teléfono cargado.');
         }
 
         return redirect()->to($link);
+    }
+
+    private function whatsappLink(array $order, float $total, ?string $stage = null): string
+    {
+        $moto = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?? ''])));
+        $moto = $moto !== '' ? $moto : uid('MOT', $order['motorcycle_id']);
+
+        $templateKey = match ($stage) {
+            'quote' => 'whatsapp_quote_template',
+            'ready' => 'whatsapp_ready_template',
+            default => 'whatsapp_template',
+        };
+
+        $message = whatsapp_message(array_merge($order, ['total' => $total]), $moto, $templateKey);
+
+        return wa_link($order['customer_phone'] ?? '', $message);
     }
 }

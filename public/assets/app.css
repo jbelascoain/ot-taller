@@ -148,8 +148,11 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
 .alert { padding: .7rem .9rem; border-radius: 9px; margin-bottom: 1rem; font-size: .9rem; border: 1px solid; }
 .alert.success { background: #e9f9f1; border-color: #b5e8d5; color: #0b6b4b; }
 .alert.error { background: #fdecec; border-color: #f7bcbc; color: #a31818; }
+.alert.notify { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; background: var(--primary-soft); border-color: #bfd3fb; color: var(--text); }
+.alert.notify .btn { flex: 0 0 auto; }
 [data-theme="dark"] .alert.success { background: #10251c; border-color: #1f5c46; color: #7ee2b8; }
 [data-theme="dark"] .alert.error { background: #2a1515; border-color: #6b2a2a; color: #ff9b9b; }
+[data-theme="dark"] .alert.notify { background: #16233a; border-color: #2b4a76; }
 .board { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: 1rem; align-items: flex-start; }
 .board-tools { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
 .board-tools [data-board-search-status]:empty { display: none; }

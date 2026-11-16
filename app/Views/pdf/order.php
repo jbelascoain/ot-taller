@@ -53,7 +53,7 @@ $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?
 <table class="two">
     <tr>
         <td>
-            <div class="label">Cliente</div>
+            <div class="label">&nbsp;</div>
             <div><strong><?= esc($order['customer_name'] ?? '—') ?></strong></div>
             <div class="small"><?= esc($order['customer_phone'] ?: 'Sin teléfono') ?></div>
         </td>

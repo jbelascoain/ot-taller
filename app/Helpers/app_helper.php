@@ -149,7 +149,7 @@ if (! function_exists('whatsapp_message')) {
     {
         $defaults = [
             'whatsapp_template'       => 'Hola {cliente}, te envío el presupuesto de la orden {orden} ({moto}). Total: {total}.',
-            'whatsapp_quote_template' => 'Hola {cliente}, el presupuesto de la orden {orden} ({moto}) está listo para aprobar. Total: {total}. Cualquier duda, respondé este mensaje.',
+            'whatsapp_quote_template' => 'Hola {cliente}, el presupuesto de la orden {orden} ({moto}) está listo para aprobar. Total: {total}.',
             'whatsapp_ready_template' => 'Hola {cliente}, tu moto {moto} ya está lista para retirar. Te esperamos en {taller}. Orden {orden}.',
         ];
 

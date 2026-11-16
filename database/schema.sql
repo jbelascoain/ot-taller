@@ -134,7 +134,7 @@ INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
     ('locale', 'es-AR'),
     ('pdf_footer', 'Gracias por confiar en {workshop}'),
     ('whatsapp_template', 'Hola {cliente}, te envío el presupuesto de la orden {orden} ({moto}). Total: {total}.'),
-    ('whatsapp_quote_template', 'Hola {cliente}, el presupuesto de la orden {orden} ({moto}) está listo para aprobar. Total: {total}. Cualquier duda, respondé este mensaje.'),
+    ('whatsapp_quote_template', 'Hola {cliente}, el presupuesto de la orden {orden} ({moto}) está listo para aprobar. Total: {total}.'),
     ('whatsapp_ready_template', 'Hola {cliente}, tu moto {moto} ya está lista para retirar. Te esperamos en {taller}. Orden {orden}.'),
     ('logo_path', ''),
     ('demo_seeded', '0'),

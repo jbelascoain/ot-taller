@@ -372,6 +372,75 @@
     applyBoardSearch();
   }
 
+  // Compartir el PDF de la orden junto con el mensaje de WhatsApp.
+  document.querySelectorAll('[data-share-pdf]').forEach(function (button) {
+    var pdfUrl  = button.getAttribute('data-pdf-url');
+    var waUrl   = button.getAttribute('href');
+    var filename = button.getAttribute('data-filename') || 'orden.pdf';
+    if (!pdfUrl || !waUrl) return;
+
+    var message = '';
+    try { message = new URL(waUrl).searchParams.get('text') || ''; } catch (error) {}
+
+    var filePromise = null;
+
+    function loadFile() {
+      if (!filePromise) {
+        filePromise = fetch(pdfUrl, { credentials: 'same-origin' })
+          .then(function (response) {
+            var type = response.headers.get('content-type') || '';
+            if (!response.ok || type.indexOf('application/pdf') === -1) {
+              throw new Error('No se pudo generar el PDF');
+            }
+            return response.blob();
+          })
+          .then(function (blob) {
+            return new File([blob], filename, { type: 'application/pdf' });
+          });
+
+        filePromise.catch(function () { filePromise = null; });
+      }
+
+      return filePromise;
+    }
+
+    function canShareFile(file) {
+      return !!(navigator.canShare && navigator.canShare({ files: [file] }));
+    }
+
+    // Precargar el PDF para que el compartir sea inmediato (especialmente iOS).
+    if (navigator.share && navigator.canShare) {
+      loadFile().catch(function () {});
+    }
+
+    button.addEventListener('click', function (event) {
+      if (!navigator.share || !navigator.canShare) {
+        return;
+      }
+
+      event.preventDefault();
+
+      loadFile()
+        .then(function (file) {
+          if (!canShareFile(file)) throw new Error('Sin soporte para compartir archivos');
+          return navigator.share({ files: [file], text: message, title: filename });
+        })
+        .catch(function (error) {
+          if (error && error.name === 'AbortError') return;
+
+          var download = document.createElement('a');
+          download.href = pdfUrl + (pdfUrl.indexOf('?') === -1 ? '?' : '&') + 'download=1';
+          download.download = filename;
+          document.body.appendChild(download);
+          download.click();
+          download.remove();
+
+          var opened = window.open(waUrl, '_blank', 'noopener');
+          if (!opened) window.location.href = waUrl;
+        });
+    });
+  });
+
   var board = document.querySelector('[data-board]');
   if (board) {
     var dragged = null;

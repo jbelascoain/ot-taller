@@ -29,7 +29,17 @@
             </div>
         </div>
         <?php if ($notifyLink): ?>
-            <a class="btn btn-primary" href="<?= esc($notifyLink) ?>" target="_blank" rel="noreferrer">Avisar por WhatsApp</a>
+            <?php
+            $notifyPdfUrl  = base_url('orders/' . $order['id'] . '/pdf');
+            $notifyPdfName = ($notifyStage === 'quote' ? 'Presupuesto-' : 'Orden-') . uid('OT', $order['id']) . '.pdf';
+            ?>
+            <div class="flex gap wrap center">
+                <a class="btn btn-primary" href="<?= esc($notifyLink) ?>" target="_blank" rel="noreferrer"
+                    data-share-pdf
+                    data-pdf-url="<?= esc($notifyPdfUrl, 'attr') ?>"
+                    data-filename="<?= esc($notifyPdfName, 'attr') ?>">Enviar PDF por WhatsApp</a>
+                <a class="btn" href="<?= esc($notifyPdfUrl) ?>?download=1">Descargar PDF</a>
+            </div>
         <?php else: ?>
             <div class="flex gap wrap center">
                 <span class="text-sm">El cliente no tiene teléfono cargado.</span>

@@ -28,8 +28,6 @@ $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?
     .totals { width: 60mm; margin-left: auto; margin-top: 8px; }
     .totals td { padding: 3px 0; }
     .totals .total td { border-top: 1px solid #999; font-weight: bold; font-size: 12pt; }
-    .sign { margin-top: 40px; }
-    .sign td { width: 45%; border-top: 1px solid #999; padding-top: 4px; font-size: 8pt; color: #777; }
     .footer { margin-top: 18px; text-align: center; font-size: 8pt; color: #777; }
 </style>
 </head>
@@ -122,13 +120,6 @@ $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?
         <div class="small"><?= nl2br(esc($order['notes'])) ?></div>
     </div>
 <?php endif; ?>
-
-<table class="sign">
-    <tr>
-        <td>Firma del cliente</td>
-        <td class="right">Aclaración / fecha</td>
-    </tr>
-</table>
 
 <div class="footer"><?= esc($footer) ?></div>
 </body>

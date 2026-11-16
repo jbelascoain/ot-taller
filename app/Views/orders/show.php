@@ -345,6 +345,20 @@
                         Activo
                     </label>
                 </div>
+                <label class="check span-2">
+                    <input type="checkbox" id="edit_item_new_supplier" name="new_supplier" value="1" data-toggle-target="#edit-new-supplier-fields">
+                    El proveedor no existe, crearlo
+                </label>
+                <div id="edit-new-supplier-fields" class="form-grid span-2 hidden">
+                    <div class="field">
+                        <label for="edit_new_supplier_name">Nombre del proveedor</label>
+                        <input type="text" id="edit_new_supplier_name" name="new_supplier_name" maxlength="160">
+                    </div>
+                    <div class="field">
+                        <label for="edit_new_supplier_phone">Teléfono</label>
+                        <input type="tel" id="edit_new_supplier_phone" name="new_supplier_phone">
+                    </div>
+                </div>
                 <div class="field span-2">
                     <label for="edit_item_notes">Notas</label>
                     <textarea id="edit_item_notes" name="notes"></textarea>

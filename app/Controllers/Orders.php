@@ -419,6 +419,9 @@ class Orders extends BaseController
         $brand         = trim((string) $this->request->getPost('brand'));
         $purchasePrice = $this->numberOrNull($this->request->getPost('purchase_price')) ?? 0.0;
         $supplierId    = (int) ($this->request->getPost('supplier_id') ?? 0);
+        $newSupplier   = $this->request->getPost('new_supplier') === '1';
+        $newSupplierName  = trim((string) $this->request->getPost('new_supplier_name'));
+        $newSupplierPhone = trim((string) $this->request->getPost('new_supplier_phone'));
         $active        = $this->request->getPost('active') === '1' ? 1 : 0;
         $notes         = trim((string) $this->request->getPost('notes'));
 
@@ -442,7 +445,15 @@ class Orders extends BaseController
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'Los precios no pueden ser negativos.');
         }
 
-        if ($supplierId > 0 && ! (new SupplierModel())->find($supplierId)) {
+        if ($newSupplier) {
+            if ($newSupplierName === '') {
+                return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'Ingresá el nombre del proveedor.');
+            }
+
+            if (mb_strlen($newSupplierName) > 160) {
+                return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'El nombre del proveedor no puede superar los 160 caracteres.');
+            }
+        } elseif ($supplierId > 0 && ! (new SupplierModel())->find($supplierId)) {
             $supplierId = 0;
         }
 
@@ -462,6 +473,16 @@ class Orders extends BaseController
             ]);
 
             if ($part) {
+                if ($newSupplier) {
+                    $supplierId = (int) (new SupplierModel())->insert([
+                        'name'    => $newSupplierName,
+                        'contact' => '',
+                        'phone'   => $newSupplierPhone,
+                        'email'   => '',
+                        'notes'   => '',
+                    ], true);
+                }
+
                 (new PartModel())->update((int) $part['id'], [
                     'description'    => $description,
                     'sku'            => $sku,

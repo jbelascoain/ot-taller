@@ -270,6 +270,21 @@
       status: document.getElementById('edit_item_status')
     };
 
+    var newSupplierToggle = document.getElementById('edit_item_new_supplier');
+    var newSupplierName = document.getElementById('edit_new_supplier_name');
+    var newSupplierPhone = document.getElementById('edit_new_supplier_phone');
+
+    if (newSupplierToggle) {
+      newSupplierToggle.addEventListener('change', function () {
+        if (newSupplierToggle.checked) {
+          itemFields.supplier.value = '';
+          itemFields.supplier.disabled = true;
+        } else {
+          itemFields.supplier.disabled = false;
+        }
+      });
+    }
+
     document.querySelectorAll('[data-item-edit]').forEach(function (button) {
       button.addEventListener('click', function () {
         var data;
@@ -280,6 +295,15 @@
         }
 
         itemForm.action = data.action || '';
+
+        if (newSupplierToggle) {
+          newSupplierToggle.checked = false;
+          newSupplierToggle.dispatchEvent(new Event('change'));
+        }
+
+        if (newSupplierName) newSupplierName.value = '';
+        if (newSupplierPhone) newSupplierPhone.value = '';
+
         itemFields.description.value = data.description || '';
         itemFields.sku.value = data.sku || '';
         itemFields.brand.value = data.brand || '';

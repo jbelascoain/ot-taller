@@ -183,9 +183,6 @@
                                             'sku'            => (string) ($item['part_sku'] ?? ''),
                                             'brand'          => (string) ($item['part_brand'] ?? ''),
                                             'purchase_price' => (string) ($item['part_purchase_price'] ?? '0'),
-                                            'sale_price'     => (string) ($item['part_sale_price'] ?? '0'),
-                                            'stock'          => (int) ($item['part_stock'] ?? 0),
-                                            'min_stock'      => (int) ($item['part_min_stock'] ?? 0),
                                             'supplier_id'    => (int) ($item['part_supplier_id'] ?? 0),
                                             'active'         => (int) ($item['part_active'] ?? 0),
                                             'notes'          => (string) ($item['part_notes'] ?? ''),
@@ -325,16 +322,13 @@
                     <input type="number" step="0.01" id="edit_item_purchase_price" name="purchase_price" min="0">
                 </div>
                 <div class="field">
-                    <label for="edit_item_sale_price">Precio de venta</label>
-                    <input type="number" step="0.01" id="edit_item_sale_price" name="sale_price" min="0">
+                    <label for="edit_item_price">Precio unitario</label>
+                    <input type="number" step="0.01" id="edit_item_price" name="unit_price" min="0">
+                    <span class="help">Es el precio de venta del repuesto.</span>
                 </div>
                 <div class="field">
-                    <label for="edit_item_stock">Stock</label>
-                    <input type="number" id="edit_item_stock" name="stock" min="0">
-                </div>
-                <div class="field">
-                    <label for="edit_item_min_stock">Stock mínimo</label>
-                    <input type="number" id="edit_item_min_stock" name="min_stock" min="0">
+                    <label for="edit_item_quantity">Cantidad</label>
+                    <input type="number" id="edit_item_quantity" name="quantity" min="1" required>
                 </div>
                 <div class="field">
                     <label for="edit_item_supplier">Proveedor</label>
@@ -359,14 +353,6 @@
 
             <div class="modal-section">En esta orden</div>
             <div class="form-grid">
-                <div class="field">
-                    <label for="edit_item_quantity">Cantidad</label>
-                    <input type="number" id="edit_item_quantity" name="quantity" min="1" required>
-                </div>
-                <div class="field">
-                    <label for="edit_item_price">Precio unitario</label>
-                    <input type="number" step="0.01" id="edit_item_price" name="unit_price" min="0">
-                </div>
                 <div class="field span-2">
                     <label for="edit_item_status">Estado</label>
                     <select id="edit_item_status" name="status">

@@ -262,9 +262,6 @@
       sku: document.getElementById('edit_item_sku'),
       brand: document.getElementById('edit_item_brand'),
       purchasePrice: document.getElementById('edit_item_purchase_price'),
-      salePrice: document.getElementById('edit_item_sale_price'),
-      stock: document.getElementById('edit_item_stock'),
-      minStock: document.getElementById('edit_item_min_stock'),
       supplier: document.getElementById('edit_item_supplier'),
       active: document.getElementById('edit_item_active'),
       notes: document.getElementById('edit_item_notes'),
@@ -287,9 +284,6 @@
         itemFields.sku.value = data.sku || '';
         itemFields.brand.value = data.brand || '';
         itemFields.purchasePrice.value = data.purchase_price || '0';
-        itemFields.salePrice.value = data.sale_price || '0';
-        itemFields.stock.value = data.stock || '0';
-        itemFields.minStock.value = data.min_stock || '0';
         itemFields.supplier.value = data.supplier_id ? String(data.supplier_id) : '';
         itemFields.active.checked = Number(data.active) === 1;
         itemFields.notes.value = data.notes || '';

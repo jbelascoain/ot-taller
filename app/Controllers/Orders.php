@@ -418,9 +418,6 @@ class Orders extends BaseController
         $sku           = trim((string) $this->request->getPost('sku'));
         $brand         = trim((string) $this->request->getPost('brand'));
         $purchasePrice = $this->numberOrNull($this->request->getPost('purchase_price')) ?? 0.0;
-        $salePrice     = $this->numberOrNull($this->request->getPost('sale_price')) ?? 0.0;
-        $stock         = max(0, (int) $this->request->getPost('stock'));
-        $minStock      = max(0, (int) $this->request->getPost('min_stock'));
         $supplierId    = (int) ($this->request->getPost('supplier_id') ?? 0);
         $active        = $this->request->getPost('active') === '1' ? 1 : 0;
         $notes         = trim((string) $this->request->getPost('notes'));
@@ -441,7 +438,7 @@ class Orders extends BaseController
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'La marca no puede superar los 80 caracteres.');
         }
 
-        if ($price < 0 || $purchasePrice < 0 || $salePrice < 0) {
+        if ($price < 0 || $purchasePrice < 0) {
             return redirect()->to('/orders/' . $orderId . '#items')->with('error', 'Los precios no pueden ser negativos.');
         }
 
@@ -470,9 +467,7 @@ class Orders extends BaseController
                     'sku'            => $sku,
                     'brand'          => $brand,
                     'purchase_price' => $purchasePrice,
-                    'sale_price'     => $salePrice,
-                    'stock'          => $stock,
-                    'min_stock'      => $minStock,
+                    'sale_price'     => $price,
                     'supplier_id'    => $supplierId ?: null,
                     'active'         => $active,
                     'notes'          => $notes,

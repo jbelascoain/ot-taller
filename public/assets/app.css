@@ -275,7 +275,7 @@ table.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
   .nav.open { display: flex; }
   .user-menu { width: 100%; justify-content: space-between; padding-top: .5rem; border-top: 1px solid var(--border); margin-top: .25rem; }
   .topbar-inner { flex-wrap: wrap; }
-  .board { scroll-snap-type: x mandatory; }
-  .column { min-width: 82vw; flex: 0 0 82vw; scroll-snap-align: start; }
+  .board { flex-direction: column; overflow-x: visible; scroll-snap-type: none; }
+  .column { width: 100%; min-width: 0; flex: 0 0 auto; scroll-snap-align: none; min-height: 0; }
   .kv { grid-template-columns: 100px 1fr; }
 }

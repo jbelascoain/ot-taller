@@ -90,6 +90,22 @@ http://192.168.68.58:8080
 - Desde la misma máquina usá `http://localhost:8080`; Docker no siempre
   permite el “hairpin” hacia la IP LAN desde el propio host.
 
+### Error `CPU does not support x86-64-v2`
+
+La imagen `mysql:8.0` usa Oracle Linux 9 y no arranca en CPUs x86-64 antiguas
+(sin SSE4.2). El proyecto usa por defecto `mysql:8.0-oraclelinux8`, que mantiene
+la compatibilidad:
+
+```bash
+docker compose up -d --force-recreate db
+```
+
+Si tu `.env` tiene una imagen distinta, asegurate de dejarla así:
+
+```env
+DB_IMAGE = mysql:8.0-oraclelinux8
+```
+
 ## Detrás de Nginx Proxy Manager
 
 Si publicás la app con NPM (HTTPS), el backend sigue siendo HTTP. Para que los
@@ -163,6 +179,7 @@ Variables de entorno principales (`.env` o entorno del contenedor):
 | `APP_PORT` | Puerto local de la app (default 8080) |
 | `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS` | Conexión MySQL |
 | `DB_ROOT_PASS` | Password root de MySQL en Docker |
+| `DB_IMAGE` | Imagen de MySQL (default `mysql:8.0-oraclelinux8`, compatible con CPUs antiguas) |
 | `SETUP_TOKEN` | Token de la pantalla `/setup` |
 | `CI_ENVIRONMENT` | `development` o `production` |
 

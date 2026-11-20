@@ -35,6 +35,8 @@ zip -r ot-taller-release.zip . -x ".git/*" ".env" "writable/cache/*" "writable/l
    `database/upgrades/2026-11-15-delivery-dates.sql`.
    Para los mensajes de WhatsApp por etapa, ejecutá también
    `database/upgrades/2026-11-16-whatsapp-templates.sql`.
+   Para el campo “Próximo servicio”, ejecutá
+   `database/upgrades/2026-11-20-next-service.sql`.
 
 ## 3. Subir archivos
 

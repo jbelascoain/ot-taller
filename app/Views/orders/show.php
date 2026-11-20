@@ -116,6 +116,10 @@
                     <label for="notes">Observaciones</label>
                     <textarea id="notes" name="notes"><?= esc($order['notes'] ?? '') ?></textarea>
                 </div>
+                <div class="field span-2">
+                    <label for="next_service">Próximo servicio</label>
+                    <textarea id="next_service" name="next_service" placeholder="Fecha, kilometraje o detalle del próximo service"><?= esc($order['next_service'] ?? '') ?></textarea>
+                </div>
             </div>
             <button class="btn btn-primary" type="submit">Guardar cambios</button>
         </form>

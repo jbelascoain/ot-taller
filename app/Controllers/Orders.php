@@ -252,6 +252,7 @@ class Orders extends BaseController
             'payment_method' => trim((string) $this->request->getPost('payment_method')),
             'invoice_number' => trim((string) $this->request->getPost('invoice_number')),
             'notes'          => trim((string) $this->request->getPost('notes')),
+            'next_service'   => trim((string) $this->request->getPost('next_service')),
             'delivery_date'  => $this->request->getPost('delivery_date') ?: null,
         ]);
 

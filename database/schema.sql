@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS work_orders (
     payment_method VARCHAR(30) NULL,
     invoice_number VARCHAR(80) NULL,
     notes TEXT NULL,
+    next_service TEXT NULL,
     delivery_date DATE NULL,
     created_at DATETIME NULL,
     updated_at DATETIME NULL,

@@ -121,6 +121,13 @@ $bike = trim(implode(' ', array_filter([$order['brand'] ?? '', $order['model'] ?
     </div>
 <?php endif; ?>
 
+<?php if (! empty($order['next_service'])): ?>
+    <div class="section">
+        <div class="label">Próximo servicio</div>
+        <div class="small"><?= nl2br(esc($order['next_service'])) ?></div>
+    </div>
+<?php endif; ?>
+
 <div class="footer"><?= esc($footer) ?></div>
 </body>
 </html>

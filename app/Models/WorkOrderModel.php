@@ -12,7 +12,7 @@ class WorkOrderModel extends Model
     protected $useTimestamps = true;
     protected $allowedFields = [
         'motorcycle_id', 'customer_id', 'entry_date', 'km', 'problem', 'diagnosis',
-        'status', 'labor', 'payment_method', 'invoice_number', 'notes', 'delivery_date',
+        'status', 'labor', 'payment_method', 'invoice_number', 'notes', 'next_service', 'delivery_date',
     ];
 
     public const STATUSES = ['INGRESO', 'PRESUPUESTADO', 'EN_REPARACION', 'PARA_ENTREGAR', 'ENTREGADO', 'CANCELADO'];

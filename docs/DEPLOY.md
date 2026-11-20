@@ -107,7 +107,9 @@ En **Admin → Configuración → Email / SMTP**:
 
 ## 8. Backups
 
-- Base: exportación desde phpMyAdmin o `mysqldump`.
+- Base: desde **Admin → Configuración → Base de datos** podés descargar un
+  respaldo `.sql` completo o restaurar uno existente. También sirve phpMyAdmin
+  o `mysqldump`.
 - Archivos: `public/uploads/` (logo) y `.env`.
 
 ## Notas

@@ -75,6 +75,10 @@ $routes->group('', ['filter' => 'auth'], static function (RouteCollection $route
 });
 
 $routes->group('admin', ['filter' => ['auth', 'admin']], static function (RouteCollection $routes): void {
+    $routes->get('database', 'Admin\\Database::index');
+    $routes->get('database/export', 'Admin\\Database::export');
+    $routes->post('database/import', 'Admin\\Database::import');
+
     $routes->get('settings', 'Admin\\Settings::index');
     $routes->post('settings', 'Admin\\Settings::update');
     $routes->post('settings/test-email', 'Admin\\Settings::testEmail');

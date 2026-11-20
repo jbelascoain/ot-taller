@@ -2,7 +2,10 @@
 <?= $this->section('content') ?>
 <div class="page-head">
     <div><h1>Configuración</h1><p class="subtitle">Branding, formato, PDF, WhatsApp y email</p></div>
-    <a class="btn" href="<?= base_url('admin/users') ?>">Administrar usuarios</a>
+    <div class="actions">
+        <a class="btn" href="<?= base_url('admin/database') ?>">Base de datos</a>
+        <a class="btn" href="<?= base_url('admin/users') ?>">Administrar usuarios</a>
+    </div>
 </div>
 <form method="post" action="<?= base_url('admin/settings') ?>" enctype="multipart/form-data" class="grid grid-2">
     <?= csrf_field() ?>

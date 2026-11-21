@@ -114,6 +114,12 @@ Si tu `.env` tiene una imagen distinta, asegurate de dejarla así:
 DB_IMAGE = mysql:8.0-oraclelinux8
 ```
 
+### `The application environment is not set correctly`
+
+Revisá `CI_ENVIRONMENT` en `.env`. Los valores válidos son `development`,
+`testing` o `production`. La app normaliza espacios, comillas, mayúsculas y
+valores inválidos a `production` para evitar el error 503.
+
 ## Detrás de Nginx Proxy Manager
 
 Si publicás la app con NPM (HTTPS), el backend sigue siendo HTTP. Para que los

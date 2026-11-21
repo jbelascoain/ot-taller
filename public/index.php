@@ -53,6 +53,31 @@ require FCPATH . '../app/Config/Paths.php';
 
 $paths = new Paths();
 
+/*
+ *---------------------------------------------------------------
+ * NORMALIZE THE APPLICATION ENVIRONMENT
+ *---------------------------------------------------------------
+ * Docker, shared hosting panels and .env files can introduce spaces,
+ * quotes, CRLF or values like "dev". CI4 only accepts development,
+ * testing and production, so anything else is normalized here.
+ */
+if (! defined('ENVIRONMENT')) {
+    $environment = $_ENV['CI_ENVIRONMENT'] ?? $_SERVER['CI_ENVIRONMENT'] ?? getenv('CI_ENVIRONMENT');
+
+    if (! is_string($environment) || trim($environment) === '') {
+        $environment = 'production';
+    }
+
+    $environment = strtolower(trim($environment, " \t\n\r\0\x0B\"'"));
+
+    if (! in_array($environment, ['development', 'testing', 'production'], true)) {
+        error_log('CI_ENVIRONMENT inválido; se usa production.');
+        $environment = 'production';
+    }
+
+    define('ENVIRONMENT', $environment);
+}
+
 // LOAD THE FRAMEWORK BOOTSTRAP FILE
 require $paths->systemDirectory . '/Boot.php';
 

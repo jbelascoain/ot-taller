@@ -51,6 +51,14 @@ Abrí <http://localhost:8080/setup> y creá el usuario administrador.
   repuestos y órdenes ficticias.
 - Usuario de demo (si cargás los datos): `staff@example.com` / `demo1234`.
 
+Las dependencias PHP (`vendor/`) se instalan dentro de la imagen y se guardan en
+el volumen `vendor_data`, así el bind mount del proyecto no las tapa. No hace
+falta Composer en el host. Si actualizás `composer.lock`:
+
+```bash
+docker compose run --rm --no-deps app composer install --no-dev --optimize-autoloader
+```
+
 Otros puertos:
 
 - App: <http://localhost:8080>
